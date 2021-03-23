@@ -8,4 +8,4 @@ class Config:
     SECRET = config('SECRET')
     API_ENDPOINT = config('API_ENDPOINT')
     SENTRY_DSN = config('SENTRY_DSN')
-    IS_DEV = is_development()
+    IS_DEV = is_development() or config('IS_DEV')

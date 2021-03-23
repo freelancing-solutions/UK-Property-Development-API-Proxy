@@ -2,10 +2,12 @@ import os, random, string, time
 
 
 def is_development():
-    if os.environ['SERVER_SOFTWARE'].lower().startswith('development'):
-        return True
-    return False
-
+    try:
+        if os.environ['SERVER_SOFTWARE'].lower().startswith('development'):
+            return True
+        return False
+    except Exception as e:
+        return False
 
 def create_id(size=64, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
