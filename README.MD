@@ -8,4 +8,7 @@
     Improved Security Key by Storing Your API Key in environment Variables
     Sentry Error Reporting and Performance Monitoring
     
-    
+
+#### Upgrade Path
+    Support for redis caching
+        
