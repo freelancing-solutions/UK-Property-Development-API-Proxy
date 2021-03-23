@@ -1,3 +1,4 @@
+# UK Property Rentals API's
 import os
 from flask import Flask, request, make_response, jsonify, render_template, Blueprint
 from endpoints.endpoints import EndPoints
@@ -5,7 +6,6 @@ from endpoints.endpoints import EndPoints
 rental = Blueprint('rental', __name__)
 
 
-#################################### UK Property Rentals API's
 @rental.route('/api/v1/valuation-rent', methods=['POST'])
 def valuation_rent():
     """

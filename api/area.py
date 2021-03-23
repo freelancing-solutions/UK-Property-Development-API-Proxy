@@ -1,8 +1,10 @@
+# UK Area API
 import os
 from flask import Flask, request, make_response, jsonify, render_template, Blueprint
 from endpoints.endpoints import EndPoints
 
 area = Blueprint('area', __name__)
+
 
 @area.route('/api/v1/crime', methods=['POST'])
 def crime():
@@ -66,4 +68,3 @@ def area_type():
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
     return EndPoints().area_type(postcode=postcode)
-
