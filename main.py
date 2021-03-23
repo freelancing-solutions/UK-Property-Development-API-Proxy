@@ -2,7 +2,10 @@ import os
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from flask import Flask, render_template
+from library.config import Config
 from cachetools import cached, LRUCache, TTLCache
+
+config = Config()
 
 # Import API's
 from api.sales import sales
@@ -12,7 +15,7 @@ from api.evaluate import evaluate
 
 
 sentry_sdk.init(
-    dsn="https://df3d3a24f8ac4ed087bc7d4393a104a3@o544206.ingest.sentry.io/5689163",
+    dsn=config.SENTRY_DSN,
     integrations=[FlaskIntegration()],
 
     # Set traces_sample_rate to 1.0 to capture 100%
