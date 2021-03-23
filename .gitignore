@@ -1,0 +1,6 @@
+.env
+.idea
+.gcloudignore
+*.map
+__pycache__
+app.yaml
