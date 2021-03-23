@@ -161,7 +161,7 @@ class EndPoints:
 
     def sold_prices(self, postcode, property_type, max_age):
         """
-        extra options for property types can be found on Notes.MD
+        extra options for property types can be found on Notes.md
         example: https://api.propertydata.co.uk/sold-prices?key={API_KEY}&postcode=W149JH&type=flat&max_age=12
         :return:
                 {
