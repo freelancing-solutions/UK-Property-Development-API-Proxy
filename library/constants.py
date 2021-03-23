@@ -1,6 +1,8 @@
 import os
 
 
+# TODO- to be used for error corrections when calling the API
+
 class Const:
     property_type = ['flat', 'detached_house', 'terrace_house', 'semi_detached_house']
     construction_dates = ['pre_1914', '1914_2000', '2000_onwards']
@@ -13,8 +15,10 @@ class Const:
     property_lists = [
         'repossessed-properties', 'unmodernised-properties', 'cash-buyers-only-properties', 'auction-properties',
         'quick-sale-properties', 'land-plots-for-sale', 'new-build-properties', 'hmo-licenced-properties',
-        'reduced-properties', 'investment-portfolios', 'back-on-market', 'slow-to-sell-properties', 'short-lease-properties',
+        'reduced-properties', 'investment-portfolios', 'back-on-market', 'slow-to-sell-properties',
+        'short-lease-properties',
         'georgian-houses', 'holiday-let-properties', 'properties-in-growth-zones', 'high-yield-properties',
-        'tenanted-properties-for-sale', 'properties-with-good-views', 'properties-with-no-chain', 'properties-with-planning-granted',
+        'tenanted-properties-for-sale', 'properties-with-good-views', 'properties-with-no-chain',
+        'properties-with-planning-granted',
         'properties-near-a-university', 'properties-with-an-annexe', 'large-properties', 'properties-on-a-corner-plot',
         'bungalows-for-sale']

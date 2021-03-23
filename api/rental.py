@@ -1,12 +1,13 @@
 # UK Property Rentals API's
-import os
-from flask import Flask, request, make_response, jsonify, render_template, Blueprint
+from cachetools import cached, LRUCache, TTLCache
+from flask import request, jsonify, Blueprint
 from endpoints.endpoints import EndPoints
 
 rental = Blueprint('rental', __name__)
 
 
 @rental.route('/api/v1/valuation-rent', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def valuation_rent():
     """
         Arguments:
@@ -68,6 +69,7 @@ def valuation_rent():
 
 
 @rental.route('/api/v1/rents', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def rents():
     """
         args:
@@ -90,6 +92,7 @@ def rents():
 
 
 @rental.route('/api/v1/rents-hmo', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def rents_hmo():
     """
         args: postcode: str
@@ -105,6 +108,7 @@ def rents_hmo():
 
 
 @rental.route('/api/v1/yields', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def yields():
     """
         args: postcode: str , bedrooms: int
@@ -124,6 +128,7 @@ def yields():
 
 
 @rental.route('/api/v1/demand-rent', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def demand_rent():
     demand_rent_data = request.get_json()
     if 'postcode' in demand_rent_data:
@@ -135,6 +140,7 @@ def demand_rent():
 
 
 @rental.route('/api/v1/lha-rent', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def lha_rent():
     lha_data = request.get_json()
     if 'postcode' in lha_data:

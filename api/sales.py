@@ -1,11 +1,14 @@
 import os
 from flask import Flask, request, make_response, jsonify, render_template, Blueprint
 from endpoints.endpoints import EndPoints
-
+from cachetools import cached, LRUCache, TTLCache
 sales = Blueprint('sales', __name__)
+
+# NOTE: Results cached for 12 Hours
 
 
 @sales.route('/api/v1/valuation-sale', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def valuation_sale():
     """
      post-body:        postcode, internal_area, property_type, construction_date, bedrooms,
@@ -65,6 +68,7 @@ def valuation_sale():
 
 
 @sales.route('/api/v1/prices', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def prices():
     prices_data = request.get_json()
 
@@ -82,6 +86,7 @@ def prices():
 
 
 @sales.route('/api/v1/prices-per-sqf', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def price_per_sqf():
     """
         given postcode : return prices-per-sqf
@@ -97,6 +102,7 @@ def price_per_sqf():
 
 
 @sales.route('/api/v1/sold-prices', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def sold_prices():
     """
         given postcode, property_type, max_age
@@ -122,6 +128,7 @@ def sold_prices():
 
 
 @sales.route('/api/v1/sold-prices-per-sqf', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def sold_prices_per_sqf():
     sold_prices_data = request.get_json()
     if 'postcode' in sold_prices_data:
@@ -133,6 +140,7 @@ def sold_prices_per_sqf():
 
 
 @sales.route('/api/v1/growth', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def growth():
     growth_data = request.get_json()
     if 'postcode' in growth_data:
@@ -144,6 +152,7 @@ def growth():
 
 
 @sales.route('/api/v1/postcode-key-stats', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def postcode_stats():
     postcode_stats_data = request.get_json()
     if 'postcode' in postcode_stats_data:
@@ -155,6 +164,7 @@ def postcode_stats():
 
 
 @sales.route('/api/v1/sourced-properties', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def sourced_properties():
     sourced_data = request.get_json()
     if 'property_list' in sourced_data:
@@ -183,6 +193,7 @@ def sourced_properties():
 
 
 @sales.route('/api/v1/property-info', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def property_info():
     property_info_data = request.get_json()
     if 'property_id' in property_info_data:
@@ -194,6 +205,7 @@ def property_info():
 
 
 @sales.route('/api/v1/development-gdv', methods=['POST'])
+@cached(cache=TTLCache(maxsize=2048, ttl=43200))
 def development_gdv():
     development_gdv_data = request.get_json()
     if 'postcode' in development_gdv_data:
