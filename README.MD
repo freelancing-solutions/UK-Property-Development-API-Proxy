@@ -11,4 +11,18 @@
 
 #### Upgrade Path
     Support for redis caching
+
+
+#### Setup Instructions
+    1. clone this repo
+    2. run pip install -r requirements.txt, inside the root of repo
+    3. create .env file with the following keys
+        - API_KEY
+        - SECRET
+        - API_ENDPOINT
+        - SENTRY_DSN
+    4. create app.yaml file if you intend to deploy to google cloud platform 
+       see instructions @ https://cloud.google.com
+    5. deploy your API
         
+                
