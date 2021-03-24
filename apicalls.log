@@ -1,0 +1,102 @@
+flask_cors.core - WARNING - Unknown option passed to Flask-CORS: headers
+flask_cors.core - WARNING - Unknown option passed to Flask-CORS: max-age
+werkzeug - WARNING -  * Debugger is active!
+werkzeug - INFO -  * Debugger PIN: 405-183-624
+werkzeug - INFO -  * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+root - INFO - 
+        message: Successful 
+        url : https://api.propertydata.co.uk/prices 
+        params : {'key': 'F3VGJSBWTC', 'postcode': 'W14 9JH', 'bedrooms': 2}
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.propertydata.co.uk:443
+root - INFO - 
+        message: HTTPSConnectionPool(host='api.propertydata.co.uk', port=443): Max retries exceeded with url: /prices?key=F3VGJSBWTC&postcode=W14+9JH&bedrooms=2 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A359610>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')) 
+        url : https://api.propertydata.co.uk/prices 
+        params : {'key': 'F3VGJSBWTC', 'postcode': 'W14 9JH', 'bedrooms': 2}
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:02:20] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:02:33] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A359DC0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (2): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F69EEDD90>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (3): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F69EEDEB0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (4): o544206.ingest.sentry.io:443
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:02:36] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:02:37] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (5): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A767CD0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (6): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F69F0EC70>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (7): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F69F0E2B0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (8): o544206.ingest.sentry.io:443
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:02:39] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:02:40] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:02:42] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (9): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F69EEDE50>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (10): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A359DF0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (11): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A3598E0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (12): o544206.ingest.sentry.io:443
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:02:43] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:02:44] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:02:46] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:03:16] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:03:17] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (13): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A775DF0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (14): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F69F0E550>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (15): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A7675E0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (16): o544206.ingest.sentry.io:443
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:03:18] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:03:19] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (17): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A775EB0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (18): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A7816D0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (19): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A775FA0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (20): o544206.ingest.sentry.io:443
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:03:21] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (21): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A775CA0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (22): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A7757C0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (23): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A775AC0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (24): o544206.ingest.sentry.io:443
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:03:53] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:03:55] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+werkzeug - INFO - 127.0.0.1 - - [24/Mar/2021 03:03:56] "[35m[1mPOST /api/v1/prices HTTP/1.1[0m" 500 -
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (25): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=2, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F6A767E50>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (26): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=1, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F69F0E8E0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (27): o544206.ingest.sentry.io:443
+urllib3.util.retry - DEBUG - Incremented Retry for (url='/api/5689163/envelope/'): Retry(total=0, connect=None, read=None, redirect=None, status=None)
+urllib3.connectionpool - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000001F69F0E160>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')': /api/5689163/envelope/
+urllib3.connectionpool - DEBUG - Starting new HTTPS connection (28): o544206.ingest.sentry.io:443

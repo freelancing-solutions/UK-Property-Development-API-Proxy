@@ -1,18 +1,123 @@
 import requests
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ConnectTimeout, ConnectionError, Timeout
 from library.config import Config
+from library.constants import Const
 from flask import jsonify
-
 config = Config()
+const = Const()
+import logging
+
+logging.basicConfig(filename='apicalls.log',
+                    filemode='w',
+                    format='%(name)s - %(levelname)s - %(message)s',
+                    level=logging.DEBUG)
 
 
 class EndPoints:
     """
-        default values
+        Investigate Using Coroutines to improve the speed of endpoints requester function
     """
     _api_base_url = config.API_ENDPOINT
     _key = config.API_KEY
     _postcode = ""
+
+    @staticmethod
+    def stats_logger(url, params, message, state):
+        """
+            logs actual api requests,
+            :param message:
+            :param url:
+            :param params:
+            :return:
+        """
+        logging.info(msg='''
+        message: {} 
+        url : {} 
+        params : {}'''.format(message, url, params))
+
+    @staticmethod
+    def no_errors(params) -> any:
+        """
+            "key": self._key,
+            "postcode": postcode or self._postcode,
+            "internal_area": internal_area,
+            "property_type": property_type,
+            "construction_date": construction_date,
+            "bedrooms": bedrooms,
+            "bathrooms": bathrooms,
+            "finish_quality": finish_quality,
+            "outdoor_space": outdoor_space,
+            "off_street_parking": off_street_parking
+
+        :param params:
+        :return:
+        """
+        print(params)
+        if not 'key' in params:
+            return jsonify({'status': 'failure', 'message': 'invalid API Key or no Key '}), 401
+
+        if 'property_type' in params:
+            if not params['property_type'] in const.property_type:
+                return jsonify({'status': 'failure', 'message': 'Invalid Property Type'}), 500
+
+        if 'construction_date' in params:
+            if not params['construction_date'] in const.construction_dates:
+                return jsonify({'status': 'failure', 'message': 'Invalid Construction Date'}), 500
+
+        if 'bedrooms' in params:
+            if 16 < int(params['bedrooms']) > 0:
+                return jsonify({'status': 'failure', 'message': 'Invalid Number of Bedrooms'}), 500
+
+        if 'bathrooms' in params:
+            if 3 < int(params['bathrooms']) > 0:
+                return jsonify({'status': 'failure', 'message': 'Invalid Number of Bathrooms'}), 500
+
+        if 'finish_quality' in params:
+            if not params['finish_quality'] in const.finish_quality:
+                return jsonify({'status': 'failure', 'message': 'Invalid Finish Quality'}), 500
+
+        if 'outdoor_space' in params:
+            if not params['outdoor_space'] in const.outdoor_space:
+                return jsonify({'status': 'failure', 'message': 'Invalid Out Door Space'}), 500
+
+        if 'region' in params:
+            if not params['region'] in const.uk_regions:
+                return jsonify({'status': 'failure', 'message': 'Invalid UK Region'}), 500
+
+        if 'country' in params:
+            if not params['country'] in const.countries_list:
+                return jsonify({'status': 'failure', 'message': 'Invalid Country'}), 500
+
+        return True
+
+    def requester(self, url, params) -> any:
+        """
+            :param url: str
+            :param params: dict {parameters}
+            :return: json object
+        """
+        try:
+            is_no_error = self.no_errors(params=params)
+
+            if isinstance(is_no_error, bool):
+                self.stats_logger(url=url, params=params, message='Successful', state=True)
+                return requests.get(url, params=params).json(), 200
+            else:
+                self.stats_logger(url=url, params=params, message='Bad Argument', state=False)
+            return is_no_error
+
+        except HTTPError as e:
+            self.stats_logger(url=url, params=params, message=e, state=False)
+            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        except ConnectTimeout as e:
+            self.stats_logger(url=url, params=params, message=e, state=False)
+            return jsonify({'status': 'failure', 'message': 'connection taking too long : {}'.format(e)}), 500
+        except ConnectionError as e:
+            self.stats_logger(url=url, params=params, message=e, state=False)
+            return jsonify({'status': 'failure', 'message': 'connection error : {}'.format(e)}), 500
+        except Timeout as e:
+            self.stats_logger(url=url, params=params, message=e, state=False)
+            return jsonify({'status': 'failure', 'message': 'request has timeout : {}'.format(e)}), 500
 
     def valuation_sale(self, postcode, internal_area, property_type, construction_date, bedrooms,
                        bathrooms, finish_quality, outdoor_space, off_street_parking):
@@ -54,16 +159,7 @@ class EndPoints:
             "off_street_parking": off_street_parking
         }
         _endpoint = 'valuation-sale'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url, params=params)
-            return response.json(), 200
-
-        except HTTPError as e:
-            print('an error occurred : {}'.format(e))
-            return jsonify({'message': 'an error occurred : {}'.format(e)}), 500
-
-    _finish_quality = ""
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def prices(self, postcode, bedrooms=2):
         """
@@ -106,12 +202,7 @@ class EndPoints:
             'bedrooms': bedrooms
         }
         _endpoint = 'prices'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def prices_per_sqf(self, postcode):
         """
@@ -152,12 +243,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'prices-per-sqf'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url, params=params)
-            return response.json()
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def sold_prices(self, postcode, property_type, max_age):
         """
@@ -204,12 +290,7 @@ class EndPoints:
             'max_age': max_age
         }
         _endpoint = 'sold-prices'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def sold_prices_per_sqf(self, postcode):
         """
@@ -252,12 +333,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = "sold-prices-per-sqf"
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def growth(self, postcode):
         """
@@ -308,12 +384,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'growth'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json()
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def postcode_key_stats(self, region):
         """
@@ -369,12 +440,7 @@ class EndPoints:
             'region': region
         }
         _endpoint = 'postcode-key-stats'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def sourced_properties(self, property_list, postcode, radius=20, results=60):
         """
@@ -446,12 +512,7 @@ class EndPoints:
         }
 
         _endpoint = 'sourced-properties'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def property_info(self, property_id):
         """
@@ -488,12 +549,7 @@ class EndPoints:
             'property_id': property_id
         }
         _endpoint = 'property-info'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def development_gdv(self, postcode, flat_2, flat_1, finish_quality):
         """
@@ -545,12 +601,7 @@ class EndPoints:
             finish_quality: finish_quality
         }
         _endpoint = 'development-gdv'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def valuation_rent(self, postcode, internal_area, property_type, construction_date, bedrooms, bathrooms,
                        finish_quality, outdoor_space, off_street_parking):
@@ -591,12 +642,7 @@ class EndPoints:
             'off_street_parking': off_street_parking
         }
         _endpoint = 'valuation-rent'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def rents(self, postcode, bedrooms):
         """
@@ -642,12 +688,7 @@ class EndPoints:
             'bedrooms': bedrooms
         }
         _endpoint = 'rents'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def rents_hmo(self, postcode):
         """
@@ -756,12 +797,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'rents-hmo'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def yields(self, postcode, bedrooms):
         """
@@ -789,12 +825,7 @@ class EndPoints:
             'bedrooms': bedrooms
         }
         _endpoint = 'yields'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def demand(self, postcode):
         """
@@ -818,12 +849,7 @@ class EndPoints:
             'postcode': postcode,
         }
         _endpoint = 'demand'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def demand_rent(self, postcode):
         """
@@ -847,11 +873,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'demand-rent'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def lha_rate(self, postcode, bedrooms):
         """
@@ -877,12 +899,7 @@ class EndPoints:
             'bedrooms': bedrooms
         }
         _endpoint = 'lha-rate'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def agents(self, postcode):
         """
@@ -1056,12 +1073,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'agents'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def crime(self, postcode):
         """
@@ -1101,12 +1113,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'crime'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def demographics(self, postcode):
         """
@@ -1182,12 +1189,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'demographics'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def schools(self, postcode):
         """
@@ -1358,11 +1360,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'schools'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def restaurants(self, postcode):
         """
@@ -1588,12 +1586,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'restaurants'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def politics(self, postcode):
         """
@@ -1627,12 +1620,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'politics'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def planning(self, postcode, decision_rating, category, max_age_decision, results):
         """
@@ -1729,12 +1717,7 @@ class EndPoints:
             'results': results
         }
         _endpoint = 'planning'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def freehold_titles(self, postcode):
         """
@@ -1845,12 +1828,7 @@ class EndPoints:
             'key': self._key,
             'postcode': postcode
         }
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def title_info(self, title):
         """
@@ -1896,12 +1874,7 @@ class EndPoints:
             'key': self._key,
             'title': title
         }
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def stamp_duty(self, value, country, additional):
         """
@@ -1923,12 +1896,7 @@ class EndPoints:
             'country': country,
             'additional': additional
         }
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def area_type(self, postcode):
         """
@@ -1943,16 +1911,12 @@ class EndPoints:
                 }
         """
         _endpoint = 'area-type'
-        url = self._api_base_url + _endpoint
+
         params = {
             'key': self._key,
             'postcode': postcode
         }
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def green_belt(self, postcode):
         """
@@ -1975,13 +1939,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'green-belt'
-        url = self._api_base_url + _endpoint
-
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def national_park(self, postcode):
         """
@@ -2003,13 +1961,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'national-park'
-        url = self._api_base_url + _endpoint
-
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def aonb(self, postcode):
         """
@@ -2030,13 +1982,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'aonb'
-        url = self._api_base_url + _endpoint
-
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def flood_risk(self, postcode):
         """
@@ -2057,13 +2003,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'flood-risk'
-        url = self._api_base_url + _endpoint
-
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def internet_speed(self, postcode):
         """
@@ -2091,13 +2031,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'internet-speed'
-        url = self._api_base_url + _endpoint
-
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def build_cost(self, postcode, property_type, internal_area, finish_quality):
         """
@@ -2127,13 +2061,7 @@ class EndPoints:
             'finish_quality': finish_quality
         }
         _endpoint = 'internet-speed'
-        url = self._api_base_url + _endpoint
-
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def ptal(self, postcode):
         """
@@ -2154,13 +2082,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'ptal'
-        url = self._api_base_url + _endpoint
-
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def council_tax(self, postcode):
         """
@@ -2221,13 +2143,7 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'council-tax'
-        url = self._api_base_url + _endpoint
-
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)
 
     def floor_areas(self, postcode):
         """
@@ -2273,15 +2189,9 @@ class EndPoints:
             'postcode': postcode
         }
         _endpoint = 'floor-areas'
-        url = self._api_base_url + _endpoint
+        return self.requester(self._api_base_url + _endpoint, params)
 
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
-
-    def listed_buildings(self, postcode, grade , listed_after):
+    def listed_buildings(self, postcode, grade, listed_after):
         """
             description: For a given full English postcode, returns up to 10 of the closest listed buildings which match the supplied filters.
             example: https://api.propertydata.co.uk/listed-buildings?key={API_KEY}&postcode=NW6+7YD&grade=II*&listed_after=1975
@@ -2328,13 +2238,8 @@ class EndPoints:
         params = {
             'key': self._key,
             'postcode': postcode,
-            'grade':grade,
+            'grade': grade,
             'listed_after': listed_after
         }
         _endpoint = 'listed-buildings'
-        url = self._api_base_url + _endpoint
-        try:
-            response = requests.get(url=url, params=params)
-            return response.json(), 200
-        except HTTPError as e:
-            return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
+        return self.requester(self._api_base_url + _endpoint, params)

@@ -1,0 +1,6 @@
+WARNING:flask_cors.core:Unknown option passed to Flask-CORS: headers
+WARNING:flask_cors.core:Unknown option passed to Flask-CORS: max-age
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 405-183-624
+INFO:werkzeug: * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+INFO:werkzeug: * Detected change in 'E:\\present work documents\\upwork\\propertydata_project\\endpoints\\endpoints.py', reloading

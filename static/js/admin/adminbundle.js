@@ -76,7 +76,7 @@ this.addEventListener('load', () => {
                             Submit
                         </strong>
                     </button>
-                </div
+                </div>
             </form>
         </div>
     `);

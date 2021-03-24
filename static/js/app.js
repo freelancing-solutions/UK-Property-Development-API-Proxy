@@ -77,7 +77,6 @@ this.addEventListener('load', () => {
         incoming_notifications_messages.push(message);
     };
 
-
     let notifications = {
         notification_list : [{
             notice: "This is a notice", notice_time: '3 seconds ago', notice_link : "/notifications/first-notice"
