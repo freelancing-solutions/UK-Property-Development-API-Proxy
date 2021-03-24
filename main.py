@@ -2,9 +2,10 @@ import os
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS, cross_origin
 from library.config import Config
+from store.store import AdminView
 from cachetools import cached, LRUCache, TTLCache
 
 config = Config()
@@ -39,6 +40,8 @@ app.register_blueprint(rental)
 app.register_blueprint(area)
 app.register_blueprint(evaluate)
 
+admin_view = AdminView()
+
 
 @app.route('/', methods=['GET', 'POST'])
 # @cached(cache=TTLCache(maxsize=1024, ttl=600))
@@ -52,10 +55,44 @@ def main():
     :return:
     """
     if request.method == "GET":
+        response = admin_view.fetch_all_admin_defaults()
+        print(response)
+        if response['status'] == "success":
+            print(response['message'])
+
+            return render_template('admin.html', admin_defaults=response['payload'])
         return render_template('admin.html')
     else:
         request_data = request.get_json()
-        print(request_data)
+        return admin_view.update_property_types(property_selections=request_data)
+
+
+@app.route('/admin', methods=['GET', 'POST'])
+# @cached(cache=TTLCache(maxsize=1024, ttl=600))
+def admin():
+    """
+        will display API Options, Save Default Values, for
+        example
+        property_types could be limited to certain types only
+        finish_quality could be limited to high_quality and etc
+        see Notes for different Options Available
+    :return:
+    """
+    return render_template('admin.html')
+
+
+@app.route('/admin/<path:path>', methods=['GET', 'POST'])
+def admin_defaults(path):
+    if request.method == "GET":
+        if path == "property-types":
+            return jsonify(admin_view.fetch_property_types())
+        if path == "admin-api-defaults":
+            return jsonify(admin_view.fetch_all_admin_defaults())
+
+    if request.method == "POST":
+        if path == "property-types":
+            request_data = request.get_json()
+            return admin_view.update_property_types(property_selections=request_data)
 
 
 @app.route('/debug-sentry')
