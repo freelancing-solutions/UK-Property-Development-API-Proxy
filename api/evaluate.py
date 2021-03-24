@@ -1,7 +1,8 @@
 # UK Property Evaluation API
-from cachetools import cached, LRUCache, TTLCache
+
 from flask import request, jsonify, Blueprint
 from endpoints.endpoints import EndPoints
+from cachetools import cached, TTLCache
 
 evaluate = Blueprint('evaluate', __name__)
 

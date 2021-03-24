@@ -1,6 +1,7 @@
 import os
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
 from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
 from library.config import Config
@@ -17,21 +18,21 @@ from api.evaluate import evaluate
 
 sentry_sdk.init(
     dsn=config.SENTRY_DSN,
-    integrations=[FlaskIntegration()],
+    integrations=[FlaskIntegration(), RedisIntegration()],
 
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     # We recommend adjusting this value in production.
-    traces_sample_rate=0.3
+    traces_sample_rate=0.5
 )
 app = Flask(__name__)
 # Press the green button in the gutter to run the script.
 cors = CORS(app, resources={r"/api/*": {"origins": config.AUTHORIZED_ADDRESSES,
-                                        "headers": ['Content-Type', 'x-access-secret'],
+                                        "headers": ['Content-Type'],
                                         "methods": ['POST'],
-                                        "max-age": 43200,
+                                        "max-age": "43200",
                                         "automatic_options": True}})
-print('cors : {}'.format(cors))
+
 # Registering API's
 app.register_blueprint(sales)
 app.register_blueprint(rental)
@@ -41,7 +42,6 @@ app.register_blueprint(evaluate)
 
 @app.route('/', methods=['GET', 'POST'])
 @cached(cache=TTLCache(maxsize=1024, ttl=600))
-@cross_origin(origins=config.AUTHORIZED_ADDRESSES, methods="POST")
 def main():
     """
         will display API Options, Save Default Values, for

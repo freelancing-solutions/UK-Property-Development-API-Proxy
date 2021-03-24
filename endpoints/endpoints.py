@@ -3,14 +3,9 @@ from requests.exceptions import HTTPError, ConnectTimeout, ConnectionError, Time
 from library.config import Config
 from library.constants import Const
 from flask import jsonify
+
 config = Config()
 const = Const()
-import logging
-
-logging.basicConfig(filename='apicalls.log',
-                    filemode='w',
-                    format='%(name)s - %(levelname)s - %(message)s',
-                    level=logging.DEBUG)
 
 
 class EndPoints:
@@ -30,10 +25,10 @@ class EndPoints:
             :param params:
             :return:
         """
-        logging.info(msg='''
-        message: {} 
-        url : {} 
-        params : {}'''.format(message, url, params))
+        # logging.info(msg='''
+        # message: {}
+        # url : {}
+        # params : {}'''.format(message, url, params))
 
     @staticmethod
     def no_errors(params) -> any:
@@ -53,15 +48,15 @@ class EndPoints:
         :return:
         """
         print(params)
-        if not 'key' in params:
+        if 'key' not in params:
             return jsonify({'status': 'failure', 'message': 'invalid API Key or no Key '}), 401
 
         if 'property_type' in params:
-            if not params['property_type'] in const.property_type:
+            if params['property_type'] not in const.property_type:
                 return jsonify({'status': 'failure', 'message': 'Invalid Property Type'}), 500
 
         if 'construction_date' in params:
-            if not params['construction_date'] in const.construction_dates:
+            if params['construction_date'] not in const.construction_dates:
                 return jsonify({'status': 'failure', 'message': 'Invalid Construction Date'}), 500
 
         if 'bedrooms' in params:
@@ -73,19 +68,19 @@ class EndPoints:
                 return jsonify({'status': 'failure', 'message': 'Invalid Number of Bathrooms'}), 500
 
         if 'finish_quality' in params:
-            if not params['finish_quality'] in const.finish_quality:
+            if params['finish_quality'] not in const.finish_quality:
                 return jsonify({'status': 'failure', 'message': 'Invalid Finish Quality'}), 500
 
         if 'outdoor_space' in params:
-            if not params['outdoor_space'] in const.outdoor_space:
+            if params['outdoor_space'] not in const.outdoor_space:
                 return jsonify({'status': 'failure', 'message': 'Invalid Out Door Space'}), 500
 
         if 'region' in params:
-            if not params['region'] in const.uk_regions:
+            if params['region'] not in const.uk_regions:
                 return jsonify({'status': 'failure', 'message': 'Invalid UK Region'}), 500
 
         if 'country' in params:
-            if not params['country'] in const.countries_list:
+            if params['country'] not in const.countries_list:
                 return jsonify({'status': 'failure', 'message': 'Invalid Country'}), 500
 
         return True
@@ -99,7 +94,7 @@ class EndPoints:
         try:
             is_no_error = self.no_errors(params=params)
 
-            if isinstance(is_no_error, bool):
+            if isinstance(is_no_error, bool) is True:
                 self.stats_logger(url=url, params=params, message='Successful', state=True)
                 return requests.get(url, params=params).json(), 200
             else:

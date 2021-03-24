@@ -1,7 +1,8 @@
-import os
-from flask import Flask, request, make_response, jsonify, render_template, Blueprint
+
+from flask import request, jsonify, Blueprint
 from endpoints.endpoints import EndPoints
-from cachetools import cached, LRUCache, TTLCache
+from cachetools import cached, TTLCache
+
 sales = Blueprint('sales', __name__)
 
 # NOTE: Results cached for 12 Hours
