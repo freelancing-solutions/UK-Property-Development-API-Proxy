@@ -22,35 +22,74 @@
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
-          <div class="row">
+          <div class="row" id="display_arrangement">
             <div class="col-lg-8">
               <div class="card">
                       <div class="card-header bg-dark">
                             <h3 class="card-title">API Manager </h3>
                       </div>
-                      <div class="card-body">
-                      <p class='card-text'>
-                          <!-- Text Here -->
+                      <div class="card-body" id="manager_screen">
 
-                      </p>
                       </div>
               </div>
             </div>
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-header bg-dark">
-                        <h3 class="card-title"> Quick Links </h3>
+                        <h3 class="card-title"> Defaults Setup </h3>
+                  </div>
+                  <div class="card-body">
+                      <ul class="align-items-md-start">
+                      <!-- Text Here -->
+                      <li class="list-group-item btn-primary text-dark text-bold">
+                          <a id="property_types_butt" href="javascript:void(0);">
+                            <i class="fas fa-house-user"> </i>
+                                Property Types
+                          </a>
+                      </li>
+                      <li class="list-group-item btn-primary text-dark text-bold">
+                          <a onclick=""  href="javascript:void(0);">
+                              <i class="fas fa-calendar"> </i>
+                              Construction Dates
+                          </a>
+                      </li>
+                      <li class="list-group-item btn-primary text-dark text-bold">
+                          <a href="javascript:void(0);">
+                              <i class="fas fa-thermometer"> </i>
+                              Finish Quality
+                          </a>
+                      </li>
+                      <li class="list-group-item btn-primary text-dark text-bold">
+                          <a href="javascript:void(0);">
+                              <i class="fas fa-bahai"> </i>
+                              Out Door Space
+                          </a>
+                      </li>
+                      </ul>
+
+                  </div>
+
+                </div>
+s
+                <div class="card">
+                    <div class="card-header bg-dark">
+                        <h3 class="card-title"> Quick Actions </h3>
                   </div>
                   <div class="card-body">
                   <p class='card-text'>
                       <!-- Text Here -->
+                      <button class="btn btn-danger">
+                          <i class="fas fa-stop"> </i>
+                          Shutdown API
+                      </button>
+
                   </p>
                   </div>
 
                 </div>
                 <div class="card">
                     <div class="card-header bg-dark">
-                        <h3 class="card-title"> Overview </h3>
+                        <h3 class="card-title"> Stats </h3>
                   </div>
                   <div class="card-body">
                   <p class='card-text'>
@@ -71,9 +110,8 @@
                 </div>
 
             </div>
+          </div>
         </div>
-
-    </div>
     </div>
 
 
@@ -86,3 +124,7 @@
 {% block header %}
     {% include "layouts/header.html" %}
 {% endblock header %}
+
+{% block user_scripts_block %}
+    <script src="{{ url_for('static', filename='js/admin/adminbundle.js')}}"></script>
+{% endblock user_scripts_block %}

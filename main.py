@@ -2,7 +2,7 @@ import os
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_cors import CORS, cross_origin
 from library.config import Config
 from cachetools import cached, LRUCache, TTLCache
@@ -41,7 +41,7 @@ app.register_blueprint(evaluate)
 
 
 @app.route('/', methods=['GET', 'POST'])
-@cached(cache=TTLCache(maxsize=1024, ttl=600))
+# @cached(cache=TTLCache(maxsize=1024, ttl=600))
 def main():
     """
         will display API Options, Save Default Values, for
@@ -51,8 +51,11 @@ def main():
         see Notes for different Options Available
     :return:
     """
-    print('Request hitted the main')
-    return render_template('admin.html')
+    if request.method == "GET":
+        return render_template('admin.html')
+    else:
+        request_data = request.get_json()
+        print(request_data)
 
 
 @app.route('/debug-sentry')
