@@ -48,19 +48,19 @@
                           </a>
                       </li>
                       <li class="list-group-item btn-primary text-dark text-bold">
-                          <a onclick=""  href="javascript:void(0);">
+                          <a id="construction_dates"  href="javascript:void(0);">
                               <i class="fas fa-calendar"> </i>
                               Construction Dates
                           </a>
                       </li>
                       <li class="list-group-item btn-primary text-dark text-bold">
-                          <a href="javascript:void(0);">
+                          <a id="finish_quality" href="javascript:void(0);">
                               <i class="fas fa-thermometer"> </i>
                               Finish Quality
                           </a>
                       </li>
                       <li class="list-group-item btn-primary text-dark text-bold">
-                          <a href="javascript:void(0);">
+                          <a id="outdoor_space" href="javascript:void(0);">
                               <i class="fas fa-bahai"> </i>
                               Out Door Space
                           </a>
@@ -70,21 +70,30 @@
                   </div>
 
                 </div>
-s
+
                 <div class="card">
                     <div class="card-header bg-dark">
-                        <h3 class="card-title"> Quick Actions </h3>
+                        <h3 class="card-title"> API State </h3>
                   </div>
                   <div class="card-body">
                   <p class='card-text'>
                       <!-- Text Here -->
-                      <button class="btn btn-danger">
-                          <i class="fas fa-stop"> </i>
-                          Shutdown API
-                      </button>
-
+                      <ul>
+                            <li id="api_state"> <span class="text text-info"> API State : </span> </li>
+                            <li id="api_health"> <span class="text text-info" >API Health : </span></li>
+                      </ul>
+                      <div id="action_buttons">
+                          <button class="btn btn-danger" id="shutdown_api">
+                              <i class="fas fa-stop"> </i>
+                              Shutdown API
+                          </button>
+                      </div>
                   </p>
                   </div>
+                  <div class="card-footer" id="quick_actions_messages">
+
+                  </div>
+
 
                 </div>
                 <div class="card">
@@ -92,18 +101,18 @@ s
                         <h3 class="card-title"> Stats </h3>
                   </div>
                   <div class="card-body">
-                  <p class='card-text'>
-                      <!-- Text Here -->
-                      Total Requests : 0
-                  </p>
-                  <p class='card-text'>
-                      <!-- Text Here -->
-                      Cached Requests : 0
-                  </p>
-                  <p class='card-text'>
-                      <!-- Text Here -->
-                      Total Saved : 0
-                  </p>
+                      <p class='card-text' id="total_requests_label">
+                          <!-- Text Here -->
+                          Total Requests : 0
+                      </p>
+                      <p class='card-text' id="cached_requests_label">
+                          <!-- Text Here -->
+                          Cached Requests : 0
+                      </p>
+                      <p class='card-text' id="failed_requests_label">
+                          <!-- Text Here -->
+                          Failed Requests : 0
+                      </p>
 
                   </div>
 

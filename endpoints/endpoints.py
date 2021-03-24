@@ -28,7 +28,12 @@ class EndPoints:
         # logging.info(msg='''
         # message: {}
         # url : {}
-        # params : {}'''.format(message, url, params))
+        # params : {}
+        from main import admin_view
+        if state:
+            admin_view.add_successful_request()
+        else:
+            admin_view.add_failed_request()
 
     @staticmethod
     def no_errors(params) -> any:

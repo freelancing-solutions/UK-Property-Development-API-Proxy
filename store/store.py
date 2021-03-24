@@ -44,8 +44,54 @@ class AdminView:
             else:
                 default_api = DefaultAPIQueries()
 
-            return {'status': 'success', 'payload': default_api.get_property_types(),
-                    'message': 'successfully fetched property types'}
+            return jsonify({'status': 'success', 'payload': default_api.get_property_types(),
+                    'message': 'successfully fetched property types'})
+
+    def set_shutdown_status(self, status):
+        with self.client.context():
+            settings_list = SettingsAPI.query().fetch()
+            if len(settings_list) > 0:
+                default_settings = settings_list[0]
+            else:
+                default_settings = SettingsAPI()
+
+            default_settings.set_shutdown_status(status=status)
+            default_settings.put()
+            return jsonify({'status': 'success', 'payload': default_settings.to_dict(),
+                    'message': 'Api is Shutting Down'})
+
+    def get_settings(self):
+        with self.client.context():
+            settings_list = SettingsAPI.query().fetch()
+            if len(settings_list) > 0:
+                default_settings = settings_list[0]
+            else:
+                default_settings = SettingsAPI()
+
+            return jsonify({'status': 'success', 'payload': default_settings.to_dict(),
+                    'message': 'Successfully fetched api settings'})
+
+    def add_successful_request(self):
+        with self.client.context():
+            settings_list = SettingsAPI.query().fetch()
+            if len(settings_list) > 0:
+                default_settings = settings_list[0]
+            else:
+                default_settings = SettingsAPI()
+
+            default_settings.add_successful_request()
+            default_settings.put()
+
+    def add_failed_request(self):
+        with self.client.context():
+            settings_list = SettingsAPI.query().fetch()
+            if len(settings_list) > 0:
+                default_settings = settings_list[0]
+            else:
+                default_settings = SettingsAPI()
+
+            default_settings.add_error_request()
+            default_settings.put()
 
 
 class DefaultAPIQueries(ndb.Model):
@@ -106,4 +152,32 @@ class DefaultAPIQueries(ndb.Model):
         if not isinstance(uk_regions, list):
             raise TypeError("Invalid uk_regions argument")
         self.uk_regions = ",".join(uk_regions)
+
+
+class SettingsAPI(ndb.Model):
+    user_shutdown = ndb.BooleanProperty(default=False)
+    api_status = ndb.BooleanProperty(default=True)
+    api_health = ndb.BooleanProperty(default=True)
+    total_requests = ndb.IntegerProperty(default=257)
+    cached_requests = ndb.IntegerProperty(default=12)
+    failed_requests = ndb.IntegerProperty(default=0)
+
+    def set_shutdown_status(self, status):
+        if not isinstance(status, bool):
+            raise TypeError('Invalid argument for API Shutdown')
+        self.user_shutdown = status
+        if status is True:
+            self.api_status = False
+        else:
+            self.api_status = True
+
+    def add_successful_request(self):
+        self.total_requests += 1
+
+    def add_error_request(self):
+        self.failed_requests += 1
+
+    def add_cached_request(self):
+        self.failed_requests += 1
+
 

@@ -55,16 +55,7 @@ def main():
     :return:
     """
     if request.method == "GET":
-        response = admin_view.fetch_all_admin_defaults()
-        print(response)
-        if response['status'] == "success":
-            print(response['message'])
-
-            return render_template('admin.html', admin_defaults=response['payload'])
         return render_template('admin.html')
-    else:
-        request_data = request.get_json()
-        return admin_view.update_property_types(property_selections=request_data)
 
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -85,14 +76,22 @@ def admin():
 def admin_defaults(path):
     if request.method == "GET":
         if path == "property-types":
-            return jsonify(admin_view.fetch_property_types())
+            return admin_view.fetch_property_types()
         if path == "admin-api-defaults":
-            return jsonify(admin_view.fetch_all_admin_defaults())
+            return admin_view.fetch_all_admin_defaults()
+        if path == "fetch-api-settings":
+            return admin_view.get_settings()
 
     if request.method == "POST":
         if path == "property-types":
             request_data = request.get_json()
             return admin_view.update_property_types(property_selections=request_data)
+
+        if path == "shutdown-api":
+            return admin_view.set_shutdown_status(status=True)
+
+        if path == "restart-api":
+            return admin_view.set_shutdown_status(status=False)
 
 
 @app.route('/debug-sentry')
