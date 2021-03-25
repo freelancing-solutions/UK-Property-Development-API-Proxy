@@ -1,14 +1,14 @@
 # UK Property Rentals API's
 from flask import request, jsonify, Blueprint
 from endpoints.endpoints import EndPoints
-from cachetools import cached, TTLCache
+from library import api_cache_decorator
 
 rental = Blueprint('rental', __name__)
 
 
 @rental.route('/api/v1/valuation-rent', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def valuation_rent():
+@api_cache_decorator
+def valuation_rent(cache):
     """
         Arguments:
             postcode, internal_area, property_type, construction_date, bedrooms, bathrooms,
@@ -16,7 +16,7 @@ def valuation_rent():
 
         :return:
     """
-
+    if cache: return cache
     valuation_rent_data = request.get_json()
 
     if 'postcode' in valuation_rent_data:
@@ -69,14 +69,15 @@ def valuation_rent():
 
 
 @rental.route('/api/v1/rents', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def rents():
+@api_cache_decorator
+def rents(cache):
     """
         args:
             postcode: str
             bedrooms: int
     :return:
     """
+    if cache: return cache
     rents_data = request.get_json()
     if 'postcode' in rents_data:
         postcode = rents_data['postcode']
@@ -92,12 +93,13 @@ def rents():
 
 
 @rental.route('/api/v1/rents-hmo', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def rents_hmo():
+@api_cache_decorator
+def rents_hmo(cache):
     """
         args: postcode: str
     :return:
     """
+    if cache: return cache
     rents_hmo_data = request.get_json()
     if 'postcode' in rents_hmo_data:
         postcode = rents_hmo_data['postcode']
@@ -108,12 +110,15 @@ def rents_hmo():
 
 
 @rental.route('/api/v1/yields', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def yields():
+@api_cache_decorator
+def yields(cache):
     """
         args: postcode: str , bedrooms: int
     :return:
     """
+    if not(cache is None):
+        return cache
+
     yields_data = request.get_json()
     if 'postcode' in yields_data:
         postcode = yields_data['postcode']
@@ -128,8 +133,11 @@ def yields():
 
 
 @rental.route('/api/v1/demand-rent', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def demand_rent():
+@api_cache_decorator
+def demand_rent(cache):
+    if not(cache is None):
+        return cache
+
     demand_rent_data = request.get_json()
     if 'postcode' in demand_rent_data:
         postcode = demand_rent_data['postcode']
@@ -140,8 +148,11 @@ def demand_rent():
 
 
 @rental.route('/api/v1/lha-rent', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def lha_rent():
+@api_cache_decorator
+def lha_rent(cache):
+    if not(cache is None):
+        return cache
+
     lha_data = request.get_json()
     if 'postcode' in lha_data:
         postcode = lha_data['postcode']

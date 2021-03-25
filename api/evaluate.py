@@ -2,13 +2,12 @@
 
 from flask import request, jsonify, Blueprint
 from endpoints.endpoints import EndPoints
-from cachetools import cached, TTLCache
-
+from library import api_cache_decorator
 evaluate = Blueprint('evaluate', __name__)
 
 
 @evaluate.route('/api/v1/planning', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def planning():
     planning_data = request.get_json()
     if 'postcode' in planning_data:
@@ -41,7 +40,7 @@ def planning():
 
 
 @evaluate.route('/api/v1/freehold-titles', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def freehold_title():
     freehold_data = request.get_json()
     if 'postcode' in freehold_data:
@@ -53,7 +52,7 @@ def freehold_title():
 
 
 @evaluate.route('/api/v1/title-info', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def title_info():
     title_data = request.get_json()
     if 'title' in title_data:
@@ -65,7 +64,7 @@ def title_info():
 
 
 @evaluate.route('/api/v1/stamp-duty', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def stamp_duty():
     stamp_data = request.get_json()
     if 'value' in stamp_data:
@@ -86,7 +85,7 @@ def stamp_duty():
 
 
 @evaluate.route('/api/v1/green-belt', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def green_belt():
     green_belt = request.get_json()
     if 'postcode' in green_belt:
@@ -97,7 +96,7 @@ def green_belt():
 
 
 @evaluate.route('/api/v1/national-park', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def national_park():
     national_park = request.get_json()
     if 'postcode' in national_park:
@@ -108,7 +107,7 @@ def national_park():
 
 
 @evaluate.route('/api/v1/aobn', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def aonb():
     anb_data = request.get_json()
     if 'postcode' in anb_data:
@@ -119,7 +118,7 @@ def aonb():
 
 
 @evaluate.route('/api/v1/flood-risk', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def flood_risk():
     flood_data = request.get_json()
     if 'postcode' in flood_data:
@@ -130,7 +129,7 @@ def flood_risk():
 
 
 @evaluate.route('/api/v1/internet-speed', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def internet_speed():
     internet_data = request.get_json()
     if 'postcode' in internet_data:
@@ -141,7 +140,7 @@ def internet_speed():
 
 
 @evaluate.route('/api/v1/build-cost', methods=["POST"])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def build_cost():
     build_cost_data = request.get_json()
     if 'postcode' in build_cost_data:
@@ -168,7 +167,7 @@ def build_cost():
 
 
 @evaluate.route('/api/v1/ptal', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def ptal():
     ptal_data = request.get_json()
     if 'postcode' in ptal_data:
@@ -180,7 +179,7 @@ def ptal():
 
 
 @evaluate.route('/api/v1/council-tax', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def council_tax():
     council_data = request.get_json()
     if 'postcode' in council_data:
@@ -192,7 +191,7 @@ def council_tax():
 
 
 @evaluate.route('/api/v1/floor-areas', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def floor_areas():
     floor_data = request.get_json()
     if 'postcode' in floor_data:
@@ -204,7 +203,7 @@ def floor_areas():
 
 
 @evaluate.route('/api/v1/listed-buildings', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
+@api_cache_decorator
 def listed_buildings():
     listed_data = request.get_json()
     if 'postcode' in listed_data:

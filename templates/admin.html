@@ -29,6 +29,46 @@
                             <h3 class="card-title">API Manager </h3>
                       </div>
                       <div class="card-body" id="manager_screen">
+                            <p class="card-text">
+                                    This is strictly for API Monitoring and Management.
+                            </p>
+                            <div class="card-body">
+                                <div class="card-header">
+                                    <h3 class="card-title">Default Setup</h3>
+                                </div>
+                                Use this section to limit search queries on your website to only the
+                                things you can afford to have people search for on your website.
+                                there is most certainly a great number of ways the property development
+                                API can be used.
+                                <hr/>
+                                <ul>
+                                        <li>
+                                            <p><em>Property Types, construction dates, and etc :</em> select only the items which you would like your users
+                                                to search for on your main website.</p>
+                                            <p>The scripts on your main website will eventually update to the selection
+                                                made here</p>
+                                        </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-header">
+                                    <h3 class="card-title">API State</h3>
+                                </div>
+                                <ul>
+                                    <li> <em>API State :</em> indicates if the proxy is up or down,
+                                    </li>
+                                    <li> <em>API Health :</em> an indication of how well our requests performs influenced by failed requests over successful requests,
+                                        if the API stays angry for too long it may be an indication that something is wrong either with the proxy or
+                                        the Property Data API
+                                    </li>
+                                    <li> <em>Shutdown API:</em> shutting down the proxy may be helpful in-case of misuse
+                                        or to trouble shoot traffic issues. either way its a quick emergency shutoff button
+                                    </li>
+                                </ul>
+                            </div>
+                          <hr>
+                          Stats indicates all requests going through the API Proxy, and may help you decide how well
+                          this proxy is doing, saving you money and time.
 
                       </div>
               </div>
@@ -133,7 +173,3 @@
 {% block header %}
     {% include "layouts/header.html" %}
 {% endblock header %}
-
-{% block user_scripts_block %}
-    <script src="{{ url_for('static', filename='js/admin/adminbundle.js')}}"></script>
-{% endblock user_scripts_block %}

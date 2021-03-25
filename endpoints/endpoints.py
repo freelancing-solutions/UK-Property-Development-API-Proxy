@@ -3,7 +3,7 @@ from requests.exceptions import HTTPError, ConnectTimeout, ConnectionError, Time
 from library.config import Config
 from library.constants import Const
 from flask import jsonify
-
+from store.store import admin_view
 config = Config()
 const = Const()
 
@@ -15,6 +15,13 @@ class EndPoints:
     _api_base_url = config.API_ENDPOINT
     _key = config.API_KEY
     _postcode = ""
+
+    @staticmethod
+    def is_api_shutdown():
+        if admin_view.is_shutdown():
+            return True
+
+        return False
 
     @staticmethod
     def stats_logger(url, params, message, state):
@@ -52,7 +59,7 @@ class EndPoints:
         :param params:
         :return:
         """
-        print(params)
+
         if 'key' not in params:
             return jsonify({'status': 'failure', 'message': 'invalid API Key or no Key '}), 401
 
@@ -97,6 +104,9 @@ class EndPoints:
             :return: json object
         """
         try:
+            if self.is_api_shutdown():
+                return jsonify({'status': 'failure', 'message': 'api is shutdown'}), 500
+
             is_no_error = self.no_errors(params=params)
 
             if isinstance(is_no_error, bool) is True:

@@ -1,14 +1,16 @@
 # UK Area API
 from flask import request, jsonify, Blueprint
 from endpoints.endpoints import EndPoints
-from cachetools import cached, TTLCache
-
+from library import api_cache_decorator
 area = Blueprint('area', __name__)
 
 
 @area.route('/api/v1/crime', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def crime():
+@api_cache_decorator
+def crime(cache):
+    if not(cache is None):
+        return cache
+
     crime_data = request.get_json()
     if 'postcode' in crime_data:
         postcode = crime_data['postcode']
@@ -18,8 +20,11 @@ def crime():
 
 
 @area.route('/api/v1/demographics', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def demographics():
+@api_cache_decorator
+def demographics(cache):
+    if not(cache is None):
+        return cache
+
     demo_data = request.get_json()
     if 'postcode' in demo_data:
         postcode = demo_data['postcode']
@@ -30,8 +35,11 @@ def demographics():
 
 
 @area.route('/api/v1/schools', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def schools():
+@api_cache_decorator
+def schools(cache):
+    if not(cache is None):
+        return cache
+
     schools_data = request.get_json()
     if 'postcode' in schools_data:
         postcode = schools_data['postcode']
@@ -42,8 +50,11 @@ def schools():
 
 
 @area.route('/api/v1/restaurants', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def restaurants():
+@api_cache_decorator
+def restaurants(cache):
+    if not(cache is None):
+        return cache
+
     rest_data = request.get_json()
     if 'postcode' in rest_data:
         postcode = rest_data['postcode']
@@ -54,8 +65,11 @@ def restaurants():
 
 
 @area.route('/api/v1/politics', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def politics():
+@api_cache_decorator
+def politics(cache):
+    if not(cache is None):
+        return cache
+
     politic_data = request.get_json()
     if 'postcode' in politic_data:
         postcode = politic_data['postcode']
@@ -66,8 +80,11 @@ def politics():
 
 
 @area.route('/api/v1/area-type', methods=['POST'])
-@cached(cache=TTLCache(maxsize=2048, ttl=43200))
-def area_type():
+@api_cache_decorator
+def area_type(cache):
+    if not(cache is None):
+        return cache
+
     area_data = request.get_json()
     if 'postcode' in area_data:
         postcode = area_data['postcode']

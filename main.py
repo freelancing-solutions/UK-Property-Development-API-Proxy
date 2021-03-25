@@ -5,8 +5,7 @@ from sentry_sdk.integrations.redis import RedisIntegration
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS, cross_origin
 from library.config import Config
-from store.store import AdminView
-from cachetools import cached, LRUCache, TTLCache
+from store.store import admin_view
 
 config = Config()
 if config.IS_DEBUG:
@@ -35,12 +34,11 @@ cors = CORS(app, resources={r"/api/*": {"origins": config.AUTHORIZED_ADDRESSES,
                                         "automatic_options": True}})
 
 # Registering API's
+
 app.register_blueprint(sales)
 app.register_blueprint(rental)
 app.register_blueprint(area)
 app.register_blueprint(evaluate)
-
-admin_view = AdminView()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -81,17 +79,35 @@ def admin_defaults(path):
             return admin_view.fetch_all_admin_defaults()
         if path == "fetch-api-settings":
             return admin_view.get_settings()
+        if path == "construction-dates":
+            return admin_view.get_construction_dates()
+        if path == "finish-quality":
+            return admin_view.fetch_finishing_quality()
 
     if request.method == "POST":
         if path == "property-types":
             request_data = request.get_json()
             return admin_view.update_property_types(property_selections=request_data)
+        if path == "construction-dates":
+            request_data = request.get_json()
+            return admin_view.update_dates_selected(dates_selected=request_data)
+
+        if path == "finish-quality":
+            request_data = request.get_json()
+            return admin_view.update_finish_quality(finish_quality=request_data)
 
         if path == "shutdown-api":
             return admin_view.set_shutdown_status(status=True)
 
         if path == "restart-api":
             return admin_view.set_shutdown_status(status=False)
+
+
+# handling warp requests
+@app.route('/_ah/warmup')
+def warmup():
+    # Handle your warmup logic here, e.g. set up a database connection pool
+    return '', 200, {}
 
 
 @app.route('/debug-sentry')
