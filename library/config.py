@@ -9,6 +9,9 @@ class Config:
     API_ENDPOINT = config('API_ENDPOINT')
     SENTRY_DSN = config('SENTRY_DSN')
     IS_DEV = config('IS_DEV')
+    PROJECT = "property-data-t-37071"
+    CACHE_TTL = 43200
+    CACHE_SIZE = 1024
 
     AUTHORIZED_ADDRESSES = ['https://www.worktravel.agency',
                             'https://worktravel.agency',
@@ -19,7 +22,7 @@ class Config:
 
     IS_DEBUG = config('IS_DEBUG')
 
-    def set_debug_cors_header(self):
+    def set_debug_cors_header(self) -> None:
         if self.IS_DEV or self.IS_DEBUG:
             self.AUTHORIZED_ADDRESSES.append('http://localhost:8080')
 

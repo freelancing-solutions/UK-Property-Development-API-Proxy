@@ -8,7 +8,7 @@ rental = Blueprint('rental', __name__)
 
 @rental.route('/api/v1/valuation-rent', methods=['POST'])
 @api_cache_decorator
-def valuation_rent(cache):
+def valuation_rent(cache: any) -> tuple:
     """
         Arguments:
             postcode, internal_area, property_type, construction_date, bedrooms, bathrooms,
@@ -16,7 +16,8 @@ def valuation_rent(cache):
 
         :return:
     """
-    if cache: return cache
+    if not (cache is None):
+        return cache
     valuation_rent_data = request.get_json()
 
     if 'postcode' in valuation_rent_data:
@@ -70,14 +71,15 @@ def valuation_rent(cache):
 
 @rental.route('/api/v1/rents', methods=['POST'])
 @api_cache_decorator
-def rents(cache):
+def rents(cache: any) -> tuple:
     """
         args:
             postcode: str
             bedrooms: int
     :return:
     """
-    if cache: return cache
+    if not(cache is None):
+        return cache
     rents_data = request.get_json()
     if 'postcode' in rents_data:
         postcode = rents_data['postcode']
@@ -94,12 +96,13 @@ def rents(cache):
 
 @rental.route('/api/v1/rents-hmo', methods=['POST'])
 @api_cache_decorator
-def rents_hmo(cache):
+def rents_hmo(cache: any) -> tuple:
     """
         args: postcode: str
     :return:
     """
-    if cache: return cache
+    if not(cache is None):
+        return cache
     rents_hmo_data = request.get_json()
     if 'postcode' in rents_hmo_data:
         postcode = rents_hmo_data['postcode']
@@ -111,7 +114,7 @@ def rents_hmo(cache):
 
 @rental.route('/api/v1/yields', methods=['POST'])
 @api_cache_decorator
-def yields(cache):
+def yields(cache: any) -> tuple:
     """
         args: postcode: str , bedrooms: int
     :return:
@@ -134,7 +137,7 @@ def yields(cache):
 
 @rental.route('/api/v1/demand-rent', methods=['POST'])
 @api_cache_decorator
-def demand_rent(cache):
+def demand_rent(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
@@ -149,7 +152,7 @@ def demand_rent(cache):
 
 @rental.route('/api/v1/lha-rent', methods=['POST'])
 @api_cache_decorator
-def lha_rent(cache):
+def lha_rent(cache: any) -> tuple:
     if not(cache is None):
         return cache
 

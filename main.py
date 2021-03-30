@@ -31,7 +31,8 @@ cors = CORS(app, resources={r"/api/*": {"origins": config.AUTHORIZED_ADDRESSES,
                                         "headers": ['Content-Type'],
                                         "methods": ['POST'],
                                         "max-age": "43200",
-                                        "automatic_options": True}})
+                                        "automatic_options": True,
+                                        'Content-Type': "application/json"}})
 
 # Registering API's
 
@@ -53,7 +54,7 @@ def main():
     :return:
     """
     if request.method == "GET":
-        return render_template('admin.html')
+        return render_template('index.html')
 
 
 @app.route('/admin', methods=['GET', 'POST'])

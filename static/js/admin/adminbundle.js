@@ -1,5 +1,6 @@
 
 
+
 self.addEventListener('load', function(){
     //TODO- if its mobile screen rearrange the row orders otherwise leave defaults
     let display_arrangement = document.getElementById('display_arrangement')
@@ -621,7 +622,6 @@ self.addEventListener('load', function(){
             let response_data = await response.json()
             document.getElementById('quick_actions_messages').innerHTML = response_data.message
         })
-
     }
 
 

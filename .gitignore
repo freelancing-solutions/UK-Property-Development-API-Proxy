@@ -1,6 +1,7 @@
 .env
 .idea
 .gcloudignore
+.secrets
 *.map
 __pycache__
 app.yaml

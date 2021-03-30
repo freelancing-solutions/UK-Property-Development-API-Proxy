@@ -4,7 +4,7 @@ from flask import request
 from store.store import admin_view
 
 
-def generate_key(json_data):
+def generate_key(json_data: dict) -> str:
     l_str = ""
     for _, value in enumerate(json_data):
         l_str += json_data[value]
@@ -14,7 +14,14 @@ def generate_key(json_data):
 def api_cache_decorator(fn):
     @wraps(fn)
     def decorated(*args, **kwargs):
-        key = (request.url.split("/")[-1] + generate_key(request.get_json())).replace(" ", "")
+        try:
+            print("Inside decorated:")
+            print("Json data : {} ".format(request.get_json()))
+            key = (request.url.split("/")[-1] + generate_key(request.get_json())).replace(" ", "")
+        except Exception as e:
+            print("Error creating Key")
+            return fn(None, *args, **kwargs)
+
         response = admin_view.get_cache(key)
         admin_view.add_cached_request()
         admin_view.add_successful_request()

@@ -7,7 +7,7 @@ area = Blueprint('area', __name__)
 
 @area.route('/api/v1/crime', methods=['POST'])
 @api_cache_decorator
-def crime(cache):
+def crime(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
@@ -21,7 +21,7 @@ def crime(cache):
 
 @area.route('/api/v1/demographics', methods=['POST'])
 @api_cache_decorator
-def demographics(cache):
+def demographics(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
@@ -36,7 +36,7 @@ def demographics(cache):
 
 @area.route('/api/v1/schools', methods=['POST'])
 @api_cache_decorator
-def schools(cache):
+def schools(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
@@ -51,7 +51,7 @@ def schools(cache):
 
 @area.route('/api/v1/restaurants', methods=['POST'])
 @api_cache_decorator
-def restaurants(cache):
+def restaurants(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
@@ -66,7 +66,7 @@ def restaurants(cache):
 
 @area.route('/api/v1/politics', methods=['POST'])
 @api_cache_decorator
-def politics(cache):
+def politics(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
@@ -81,7 +81,7 @@ def politics(cache):
 
 @area.route('/api/v1/area-type', methods=['POST'])
 @api_cache_decorator
-def area_type(cache):
+def area_type(cache: any) -> tuple:
     if not(cache is None):
         return cache
 

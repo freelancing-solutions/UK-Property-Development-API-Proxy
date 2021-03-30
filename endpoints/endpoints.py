@@ -4,6 +4,7 @@ from library.config import Config
 from library.constants import Const
 from flask import jsonify
 from store.store import admin_view
+
 config = Config()
 const = Const()
 
@@ -17,25 +18,23 @@ class EndPoints:
     _postcode = ""
 
     @staticmethod
-    def is_api_shutdown():
+    def is_api_shutdown() -> bool:
         if admin_view.is_shutdown():
             return True
 
         return False
 
     @staticmethod
-    def stats_logger(url, params, message, state):
+    def stats_logger(url: str, params: dict, message: str, state: bool) -> None:
         """
             logs actual api requests,
+            :param state:
             :param message:
             :param url:
             :param params:
             :return:
         """
-        # logging.info(msg='''
-        # message: {}
-        # url : {}
-        # params : {}
+
         from main import admin_view
         if state:
             admin_view.add_successful_request()
@@ -43,7 +42,7 @@ class EndPoints:
             admin_view.add_failed_request()
 
     @staticmethod
-    def no_errors(params) -> any:
+    def no_errors(params: dict) -> any:
         """
             "key": self._key,
             "postcode": postcode or self._postcode,
@@ -97,7 +96,7 @@ class EndPoints:
 
         return True
 
-    def requester(self, url, params) -> any:
+    def requester(self, url: str, params: dict) -> tuple:
         """
             :param url: str
             :param params: dict {parameters}
@@ -111,26 +110,28 @@ class EndPoints:
 
             if isinstance(is_no_error, bool) is True:
                 self.stats_logger(url=url, params=params, message='Successful', state=True)
+                # TODO : consider making an asynchronoues request here
                 return requests.get(url, params=params).json(), 200
             else:
                 self.stats_logger(url=url, params=params, message='Bad Argument', state=False)
             return is_no_error
 
         except HTTPError as e:
-            self.stats_logger(url=url, params=params, message=e, state=False)
+            self.stats_logger(url=url, params=params, message=str(e.description), state=False)
             return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
         except ConnectTimeout as e:
-            self.stats_logger(url=url, params=params, message=e, state=False)
+            self.stats_logger(url=url, params=params, message=str(e), state=False)
             return jsonify({'status': 'failure', 'message': 'connection taking too long : {}'.format(e)}), 500
         except ConnectionError as e:
-            self.stats_logger(url=url, params=params, message=e, state=False)
+            self.stats_logger(url=url, params=params, message=str(e), state=False)
             return jsonify({'status': 'failure', 'message': 'connection error : {}'.format(e)}), 500
         except Timeout as e:
-            self.stats_logger(url=url, params=params, message=e, state=False)
+            self.stats_logger(url=url, params=params, message=str(e), state=False)
             return jsonify({'status': 'failure', 'message': 'request has timeout : {}'.format(e)}), 500
 
-    def valuation_sale(self, postcode, internal_area, property_type, construction_date, bedrooms,
-                       bathrooms, finish_quality, outdoor_space, off_street_parking):
+    def valuation_sale(self, postcode: str, internal_area: str, property_type: str, construction_date: str,
+                       bedrooms: int, bathrooms: int, finish_quality: str, outdoor_space: str,
+                       off_street_parking: str) -> tuple:
         """
         https://api.propertydata.co.uk/valuation-sale?key={API_KEY}&postcode=OX41YB&internal_area=828&property_type=flat&construction_date=pre_1914&bedrooms=3&bathrooms=1&finish_quality=below_average&outdoor_space=garden&off_street_parking=0
 
@@ -171,7 +172,7 @@ class EndPoints:
         _endpoint = 'valuation-sale'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def prices(self, postcode, bedrooms=2):
+    def prices(self, postcode: str, bedrooms: int = 2) -> tuple:
         """
             example :     https://api.propertydata.co.uk/prices?key={API_KEY}&postcode=W149JH&bedrooms=2
             :return:
@@ -214,7 +215,7 @@ class EndPoints:
         _endpoint = 'prices'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def prices_per_sqf(self, postcode):
+    def prices_per_sqf(self, postcode: str) -> tuple:
         """
         example: https://api.propertydata.co.uk/prices-per-sqf?key={API_KEY}&postcode=W149JH
         :return:
@@ -255,7 +256,7 @@ class EndPoints:
         _endpoint = 'prices-per-sqf'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def sold_prices(self, postcode, property_type, max_age):
+    def sold_prices(self, postcode: str, property_type: str, max_age: int) -> tuple:
         """
         extra options for property types can be found on Notes.md
         example: https://api.propertydata.co.uk/sold-prices?key={API_KEY}&postcode=W149JH&type=flat&max_age=12
@@ -302,7 +303,7 @@ class EndPoints:
         _endpoint = 'sold-prices'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def sold_prices_per_sqf(self, postcode):
+    def sold_prices_per_sqf(self, postcode: str) -> tuple:
         """
         example: https://api.propertydata.co.uk/sold-prices-per-sqf?key={API_KEY}&postcode=W149JH
         :return:
@@ -345,7 +346,7 @@ class EndPoints:
         _endpoint = "sold-prices-per-sqf"
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def growth(self, postcode):
+    def growth(self, postcode: str) -> tuple:
         """
         example: https://api.propertydata.co.uk/growth?key={API_KEY}&postcode=W14
         :return:
@@ -396,7 +397,7 @@ class EndPoints:
         _endpoint = 'growth'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def postcode_key_stats(self, region):
+    def postcode_key_stats(self, region: str) -> tuple:
         """
         example: https://api.propertydata.co.uk/postcode-key-stats?key={API_KEY}&region=south_east
         :return:
@@ -452,7 +453,7 @@ class EndPoints:
         _endpoint = 'postcode-key-stats'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def sourced_properties(self, property_list, postcode, radius=20, results=60):
+    def sourced_properties(self, property_list: str, postcode: str, radius: int = 20, results: int = 60) -> tuple:
         """
         example: https://api.propertydata.co.uk/sourced-properties?key={API_KEY}&list=repossessed-properties&postcode=NW6+7YD&radius=20&results=60
         :return:
@@ -524,7 +525,7 @@ class EndPoints:
         _endpoint = 'sourced-properties'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def property_info(self, property_id):
+    def property_info(self, property_id: str) -> tuple:
         """
         :example : https://api.propertydata.co.uk/property-info?key={API_KEY}&property_id=Z53400803
 
@@ -561,7 +562,7 @@ class EndPoints:
         _endpoint = 'property-info'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def development_gdv(self, postcode, flat_2, flat_1, finish_quality):
+    def development_gdv(self, postcode: str, flat_2: str, flat_1: str, finish_quality: str) -> tuple:
         """
         :example: https://api.propertydata.co.uk/development-gdv?key={API_KEY}&postcode=NW6+7YD&flat_2=4&flat_1=1&finish_quality=medium
 
@@ -613,8 +614,9 @@ class EndPoints:
         _endpoint = 'development-gdv'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def valuation_rent(self, postcode, internal_area, property_type, construction_date, bedrooms, bathrooms,
-                       finish_quality, outdoor_space, off_street_parking):
+    def valuation_rent(self, postcode: str, internal_area: str, property_type: str, construction_date: str,
+                       bedrooms: int, bathrooms: int, finish_quality: str, outdoor_space: str,
+                       off_street_parking: str) -> tuple:
         """
             :example: https://api.propertydata.co.uk/valuation-rent?key={API_KEY}&postcode=OX41YB&internal_area=828&property_type=flat&construction_date=pre_1914&bedrooms=3&bathrooms=1&finish_quality=below_average&outdoor_space=garden&off_street_parking=0
             :return:
@@ -654,7 +656,7 @@ class EndPoints:
         _endpoint = 'valuation-rent'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def rents(self, postcode, bedrooms):
+    def rents(self, postcode: str, bedrooms: int) -> tuple:
         """
         :example: https://api.propertydata.co.uk/rents?key={API_KEY}&postcode=W149JH&bedrooms=2
         :return:
@@ -700,7 +702,7 @@ class EndPoints:
         _endpoint = 'rents'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def rents_hmo(self, postcode):
+    def rents_hmo(self, postcode: str) -> tuple:
         """
         :example: https://api.propertydata.co.uk/rents-hmo?key={API_KEY}&postcode=W149JH
         :return:
@@ -809,7 +811,7 @@ class EndPoints:
         _endpoint = 'rents-hmo'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def yields(self, postcode, bedrooms):
+    def yields(self, postcode: str, bedrooms: int) -> tuple:
         """
         :example: https://api.propertydata.co.uk/yields?key={API_KEY}&postcode=W149JH&bedrooms=2
         :return:
@@ -837,7 +839,7 @@ class EndPoints:
         _endpoint = 'yields'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def demand(self, postcode):
+    def demand(self, postcode: str) -> tuple:
         """
         :example: https://api.propertydata.co.uk/demand?key={API_KEY}&postcode=W14
         :return:
@@ -861,7 +863,7 @@ class EndPoints:
         _endpoint = 'demand'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def demand_rent(self, postcode):
+    def demand_rent(self, postcode: str) -> tuple:
         """
         example: https://api.propertydata.co.uk/demand-rent?key={API_KEY}&postcode=W14
         :return:
@@ -885,7 +887,7 @@ class EndPoints:
         _endpoint = 'demand-rent'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def lha_rate(self, postcode, bedrooms):
+    def lha_rate(self, postcode: str, bedrooms: str) -> tuple:
         """
             example: https://api.propertydata.co.uk/lha-rate?key={API_KEY}&postcode=W14+9JH&bedrooms=2
         :return:
@@ -911,7 +913,7 @@ class EndPoints:
         _endpoint = 'lha-rate'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def agents(self, postcode):
+    def agents(self, postcode: str) -> tuple:
         """
          example: https://api.propertydata.co.uk/agents?key={API_KEY}&postcode=W14
         :return:
@@ -1085,7 +1087,7 @@ class EndPoints:
         _endpoint = 'agents'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def crime(self, postcode):
+    def crime(self, postcode: str) -> tuple:
         """
             example: https://api.propertydata.co.uk/crime?key={API_KEY}&postcode=W14+9JH
         return:
@@ -1125,7 +1127,7 @@ class EndPoints:
         _endpoint = 'crime'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def demographics(self, postcode):
+    def demographics(self, postcode: str) -> tuple:
         """
             example: https://api.propertydata.co.uk/demographics?key={API_KEY}&postcode=W149JH
         return:
@@ -1201,7 +1203,7 @@ class EndPoints:
         _endpoint = 'demographics'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def schools(self, postcode):
+    def schools(self, postcode: str) -> tuple:
         """
             example: https://api.propertydata.co.uk/schools?key={API_KEY}&postcode=W21TR
         return:
@@ -1372,7 +1374,7 @@ class EndPoints:
         _endpoint = 'schools'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def restaurants(self, postcode):
+    def restaurants(self, postcode: str) -> tuple:
         """
             example: https://api.propertydata.co.uk/restaurants?key={API_KEY}&postcode=OX73EX
         return:
@@ -1598,7 +1600,7 @@ class EndPoints:
         _endpoint = 'restaurants'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def politics(self, postcode):
+    def politics(self, postcode: str) -> tuple:
         """
             example: https://api.propertydata.co.uk/politics?key={API_KEY}&postcode=W14+9JH
 
@@ -1632,7 +1634,8 @@ class EndPoints:
         _endpoint = 'politics'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def planning(self, postcode, decision_rating, category, max_age_decision, results):
+    def planning(self, postcode: str, decision_rating: str, category: str, max_age_decision: int,
+                 results: int) -> tuple:
         """
             example: https://api.propertydata.co.uk/planning?key={API_KEY}&postcode=NW6+7YD&decision_rating=positive&category=EXTENSION&max_age_decision=120&results=20
         return:
@@ -1729,7 +1732,7 @@ class EndPoints:
         _endpoint = 'planning'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def freehold_titles(self, postcode):
+    def freehold_titles(self, postcode: str) -> tuple:
         """
         example: https://api.propertydata.co.uk/freehold-titles?key={API_KEY}&postcode=NW6+7YD
         return:
@@ -1840,7 +1843,7 @@ class EndPoints:
         }
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def title_info(self, title):
+    def title_info(self, title: str) -> tuple:
         """
         example: https://api.propertydata.co.uk/title-info?key={API_KEY}&title=LN149464
         return:
@@ -1886,7 +1889,7 @@ class EndPoints:
         }
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def stamp_duty(self, value, country, additional):
+    def stamp_duty(self, value: str, country: str, additional: str) -> tuple:
         """
             example: https://api.propertydata.co.uk/stamp-duty?key={API_KEY}&value=250000&country=scotland&additional=1
         return:
@@ -1908,7 +1911,7 @@ class EndPoints:
         }
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def area_type(self, postcode):
+    def area_type(self, postcode: str) -> tuple:
         """
             example: https://api.propertydata.co.uk/area-type?key={API_KEY}&postcode=OX44+9LW
         return:
@@ -1928,7 +1931,7 @@ class EndPoints:
         }
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def green_belt(self, postcode):
+    def green_belt(self, postcode: str) -> tuple:
         """
             description: For a full UK postcode, returns whether the property is within the green belt (and if applicable the green belt name).
 
@@ -1951,7 +1954,7 @@ class EndPoints:
         _endpoint = 'green-belt'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def national_park(self, postcode):
+    def national_park(self, postcode: str) -> tuple:
         """
             description: For a full UK postcode, returns whether the property is within a national park (and if applicable the national park name).
             example: https://api.propertydata.co.uk/national-park?key={API_KEY}&postcode=EX35+6EQ
@@ -1973,7 +1976,7 @@ class EndPoints:
         _endpoint = 'national-park'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def aonb(self, postcode):
+    def aonb(self, postcode: str) -> tuple:
         """
             description: For a full UK postcode, returns whether the property is within an Area of Outstanding National Beauty (AONB) (and if applicable the AONB name).
             example: https://api.propertydata.co.uk/aonb?key={API_KEY}&postcode=OX7+3EX
@@ -1994,7 +1997,7 @@ class EndPoints:
         _endpoint = 'aonb'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def flood_risk(self, postcode):
+    def flood_risk(self, postcode: str) -> tuple:
         """
             description: For a full postcode in England, returns the risk of flooding from rivers and sea. Possible flood risk values are
             example: https://api.propertydata.co.uk/flood-risk?key={API_KEY}&postcode=OX7+3EX
@@ -2015,7 +2018,7 @@ class EndPoints:
         _endpoint = 'flood-risk'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def internet_speed(self, postcode):
+    def internet_speed(self, postcode: str) -> tuple:
         """
             description: For a full postcode UK postcode, returns analytics on the internet speeds available.
             example: https://api.propertydata.co.uk/internet-speed?key={API_KEY}&postcode=DY3+2QG
@@ -2043,7 +2046,7 @@ class EndPoints:
         _endpoint = 'internet-speed'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def build_cost(self, postcode, property_type, internal_area, finish_quality):
+    def build_cost(self, postcode: str, property_type: str, internal_area: str, finish_quality: str) -> tuple:
         """
             description : For a full UK postcode, building type, internal area (in square feet) and finish quality returns the estimated building cost (both total and per square foot
             example: https://api.propertydata.co.uk/build-cost?key={API_KEY}&postcode=CF158RU&type=house&internal_area=2500&finish_quality=medium
@@ -2073,7 +2076,7 @@ class EndPoints:
         _endpoint = 'internet-speed'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def ptal(self, postcode):
+    def ptal(self, postcode: str) -> tuple:
         """
             description: For a full UK postcode within Greater London, returns the PTAL score. Possible values for the 'ptal' field from worst to best are: 01a1b23456a6b
             example: https://api.propertydata.co.uk/ptal?key={API_KEY}&postcode=W14+9JH
@@ -2094,7 +2097,7 @@ class EndPoints:
         _endpoint = 'ptal'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def council_tax(self, postcode):
+    def council_tax(self, postcode: str) -> tuple:
         """
             description: For a full UK postcode, returns analytics on average council tax by property band in the council area, plus a rating on how well this council is performing on keeping tax low. Additionally returns known individual property council tax bands for the area.
             example: https://api.propertydata.co.uk/council-tax?key={API_KEY}&postcode=W14+9JH
@@ -2155,7 +2158,7 @@ class EndPoints:
         _endpoint = 'council-tax'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def floor_areas(self, postcode):
+    def floor_areas(self, postcode: str) -> tuple:
         """
             description:
             example: https://api.propertydata.co.uk/floor-areas?key={API_KEY}&postcode=W14+9JH
@@ -2201,7 +2204,7 @@ class EndPoints:
         _endpoint = 'floor-areas'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def listed_buildings(self, postcode, grade, listed_after):
+    def listed_buildings(self, postcode: str, grade: str, listed_after: str) -> tuple:
         """
             description: For a given full English postcode, returns up to 10 of the closest listed buildings which match the supplied filters.
             example: https://api.propertydata.co.uk/listed-buildings?key={API_KEY}&postcode=NW6+7YD&grade=II*&listed_after=1975

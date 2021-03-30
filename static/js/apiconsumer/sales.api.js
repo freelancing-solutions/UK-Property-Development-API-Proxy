@@ -9,7 +9,7 @@ let templates = (temp) => {
         case 'prices': return `
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title"> Prices </h3>
+                                    <h3 class="card-title"> UK Properties </h3>
                                 </div>
                                 <!-- expected arguments
                                     - postcode

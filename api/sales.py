@@ -9,13 +9,13 @@ sales = Blueprint('sales', __name__)
 
 @sales.route('/api/v1/valuation-sale', methods=['POST'])
 @api_cache_decorator
-def valuation_sale(cache):
+def valuation_sale(cache: any) -> tuple:
     """
      post-body:        postcode, internal_area, property_type, construction_date, bedrooms,
                        bathrooms, finish_quality, outdoor_space, off_street_parking
     :return:
     """
-    if cache:
+    if not(cache is None):
         return cache
     valuation_data = request.get_json()
     if 'postcode' in valuation_data:
@@ -71,9 +71,10 @@ def valuation_sale(cache):
 
 @sales.route('/api/v1/prices', methods=['POST'])
 @api_cache_decorator
-def prices(cache):
-    if cache:
+def prices(cache: any) -> tuple:
+    if not(cache is None):
         return cache
+
     prices_data = request.get_json()
     if 'postcode' in prices_data:
         postcode = prices_data['postcode']
@@ -90,13 +91,14 @@ def prices(cache):
 
 @sales.route('/api/v1/prices-per-sqf', methods=['POST'])
 @api_cache_decorator
-def price_per_sqf(cache):
+def price_per_sqf(cache: any) -> tuple:
     """
         given postcode : return prices-per-sqf
     :return:
     """
-    if cache:
+    if not(cache is None):
         return cache
+
     prices_data = request.get_json()
     if 'postcode' in prices_data:
         postcode = prices_data['postcode']
@@ -108,12 +110,14 @@ def price_per_sqf(cache):
 
 @sales.route('/api/v1/sold-prices', methods=['POST'])
 @api_cache_decorator
-def sold_prices(cache):
+def sold_prices(cache: any) -> tuple:
     """
         given postcode, property_type, max_age
     :return: sold prices
     """
-    if cache: return cache
+    if not(cache is None):
+        return cache
+
     sold_prices_data = request.get_json()
     if 'postcode' in sold_prices_data:
         postcode = sold_prices_data['postcode']
@@ -135,9 +139,11 @@ def sold_prices(cache):
 
 @sales.route('/api/v1/sold-prices-per-sqf', methods=['POST'])
 @api_cache_decorator
-def sold_prices_per_sqf(cache):
+def sold_prices_per_sqf(cache: any) -> tuple:
 
-    if cache: return cache
+    if not(cache is None):
+        return cache
+
     sold_prices_data = request.get_json()
     if 'postcode' in sold_prices_data:
         postcode = sold_prices_data['postcode']
@@ -149,8 +155,10 @@ def sold_prices_per_sqf(cache):
 
 @sales.route('/api/v1/growth', methods=['POST'])
 @api_cache_decorator
-def growth(cache):
-    if cache: return cache
+def growth(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
+
     growth_data = request.get_json()
     if 'postcode' in growth_data:
         postcode = growth_data['postcode']
@@ -162,8 +170,10 @@ def growth(cache):
 
 @sales.route('/api/v1/postcode-key-stats', methods=['POST'])
 @api_cache_decorator
-def postcode_stats(cache):
-    if cache: return cache
+def postcode_stats(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
+
     postcode_stats_data = request.get_json()
     if 'region' in postcode_stats_data:
         region = postcode_stats_data['region']
@@ -175,8 +185,10 @@ def postcode_stats(cache):
 
 @sales.route('/api/v1/sourced-properties', methods=['POST'])
 @api_cache_decorator
-def sourced_properties(cache):
-    if cache: return cache
+def sourced_properties(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
+
     sourced_data = request.get_json()
     if 'property_list' in sourced_data:
         property_list = sourced_data['property_list']
@@ -205,8 +217,9 @@ def sourced_properties(cache):
 
 @sales.route('/api/v1/property-info', methods=['POST'])
 @api_cache_decorator
-def property_info(cache):
-    if cache: return cache
+def property_info(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
     property_info_data = request.get_json()
     if 'property_id' in property_info_data:
         property_id = property_info_data['property_id']
@@ -218,7 +231,10 @@ def property_info(cache):
 
 @sales.route('/api/v1/development-gdv', methods=['POST'])
 @api_cache_decorator
-def development_gdv():
+def development_gdv(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
+
     development_gdv_data = request.get_json()
     if 'postcode' in development_gdv_data:
         postcode = development_gdv_data['postcode']

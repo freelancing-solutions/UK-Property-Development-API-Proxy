@@ -1,5 +1,9 @@
 
 ### Accepted valuation options
+prices
+prices per square feet
+sold prices
+property growth
 
 #### property_type
 

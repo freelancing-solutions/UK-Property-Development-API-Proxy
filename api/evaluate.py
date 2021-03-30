@@ -8,7 +8,9 @@ evaluate = Blueprint('evaluate', __name__)
 
 @evaluate.route('/api/v1/planning', methods=['POST'])
 @api_cache_decorator
-def planning():
+def planning(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
     planning_data = request.get_json()
     if 'postcode' in planning_data:
         postcode = planning_data['postcode']
@@ -41,7 +43,9 @@ def planning():
 
 @evaluate.route('/api/v1/freehold-titles', methods=['POST'])
 @api_cache_decorator
-def freehold_title():
+def freehold_title(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
     freehold_data = request.get_json()
     if 'postcode' in freehold_data:
         postcode = freehold_data['postcode']
@@ -53,7 +57,9 @@ def freehold_title():
 
 @evaluate.route('/api/v1/title-info', methods=['POST'])
 @api_cache_decorator
-def title_info():
+def title_info(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
     title_data = request.get_json()
     if 'title' in title_data:
         title = title_data['title']
@@ -65,7 +71,9 @@ def title_info():
 
 @evaluate.route('/api/v1/stamp-duty', methods=['POST'])
 @api_cache_decorator
-def stamp_duty():
+def stamp_duty(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
     stamp_data = request.get_json()
     if 'value' in stamp_data:
         value = stamp_data['value']
@@ -86,7 +94,9 @@ def stamp_duty():
 
 @evaluate.route('/api/v1/green-belt', methods=['POST'])
 @api_cache_decorator
-def green_belt():
+def green_belt(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
     green_belt = request.get_json()
     if 'postcode' in green_belt:
         postcode = green_belt['postcode']
@@ -97,7 +107,10 @@ def green_belt():
 
 @evaluate.route('/api/v1/national-park', methods=['POST'])
 @api_cache_decorator
-def national_park():
+def national_park(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
+
     national_park = request.get_json()
     if 'postcode' in national_park:
         postcode = national_park['postcode']
@@ -108,7 +121,9 @@ def national_park():
 
 @evaluate.route('/api/v1/aobn', methods=['POST'])
 @api_cache_decorator
-def aonb():
+def aonb(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
     anb_data = request.get_json()
     if 'postcode' in anb_data:
         postcode = anb_data['postcode']
@@ -119,7 +134,9 @@ def aonb():
 
 @evaluate.route('/api/v1/flood-risk', methods=['POST'])
 @api_cache_decorator
-def flood_risk():
+def flood_risk(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
     flood_data = request.get_json()
     if 'postcode' in flood_data:
         postcode = flood_data['postcode']
@@ -130,7 +147,9 @@ def flood_risk():
 
 @evaluate.route('/api/v1/internet-speed', methods=['POST'])
 @api_cache_decorator
-def internet_speed():
+def internet_speed(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
     internet_data = request.get_json()
     if 'postcode' in internet_data:
         postcode = internet_data['postcode']
@@ -141,7 +160,10 @@ def internet_speed():
 
 @evaluate.route('/api/v1/build-cost', methods=["POST"])
 @api_cache_decorator
-def build_cost():
+def build_cost(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
+
     build_cost_data = request.get_json()
     if 'postcode' in build_cost_data:
         postcode = build_cost_data['postcode']
@@ -168,7 +190,10 @@ def build_cost():
 
 @evaluate.route('/api/v1/ptal', methods=['POST'])
 @api_cache_decorator
-def ptal():
+def ptal(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
+
     ptal_data = request.get_json()
     if 'postcode' in ptal_data:
         postcode = ptal_data['postcode']
@@ -180,7 +205,10 @@ def ptal():
 
 @evaluate.route('/api/v1/council-tax', methods=['POST'])
 @api_cache_decorator
-def council_tax():
+def council_tax(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
+
     council_data = request.get_json()
     if 'postcode' in council_data:
         postcode = council_data['postcode']
@@ -192,7 +220,10 @@ def council_tax():
 
 @evaluate.route('/api/v1/floor-areas', methods=['POST'])
 @api_cache_decorator
-def floor_areas():
+def floor_areas(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
+
     floor_data = request.get_json()
     if 'postcode' in floor_data:
         postcode = floor_data['postcode']
@@ -204,7 +235,10 @@ def floor_areas():
 
 @evaluate.route('/api/v1/listed-buildings', methods=['POST'])
 @api_cache_decorator
-def listed_buildings():
+def listed_buildings(cache: any) -> tuple:
+    if not(cache is None):
+        return cache
+
     listed_data = request.get_json()
     if 'postcode' in listed_data:
         postcode = listed_data['postcode']
