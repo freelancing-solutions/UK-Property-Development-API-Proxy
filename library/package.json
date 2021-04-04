@@ -1,0 +1,32 @@
+{"bedrooms":3,
+  "data":
+  {
+    "100pc_range":[495000,1350000],
+    "70pc_range":[570000,1100000],
+    "80pc_range":[550000,1150000],
+    "90pc_range":[510000,1150000],
+    "average":861995,
+    "points_analysed":20,
+    "radius":"0.22",
+    "raw_data":
+    [
+      {"bedrooms":3,"distance":"0.05","lat":"51.48942000","lng":"-0.20850804","price":729950,
+        "type":"flat"},
+      {"bedrooms":3,"distance":"0.06","lat":"51.48862500","lng":"-0.20638800","price":895000,
+        "type":"flat"},
+      {"bedrooms":3,"distance":"0.09","lat":"51.48801800","lng":"-0.20924400","price":850000,
+        "type":"flat"},
+      {"bedrooms":3,"distance":"0.10","lat":"51.48940000","lng":"-0.20990400","price":1150000,
+        "type":"terraced_house"},
+      {"bedrooms":3,"distance":"0.10","lat":"51.48836600","lng":"-0.20558800","price":1150000,
+        "type":"terraced_house"},
+      {"bedrooms":3,"distance":"0.11","lat":"51.48998600","lng":"-0.20585200","price":900000,
+        "type":"flat"},{"bedrooms":3,"distance":"0.11","lat":"51.48971000","lng":"-0.20544100",
+      "price":510000,"type":"flat"},
+      {"bedrooms":3,"distance":"0.13","lat":"51.48913000","lng":"-0.21076500","price":1100000,
+        "type":"terraced_house"},
+      {"bedrooms":3,"distance":"0.13","lat":"51.48912100","lng":"-0.21074500","price":1350000,
+        "type":"flat"},
+      {"bedrooms":3,"distance":"0.13","lat":"51.48923490","lng":"-0.20484100","price":825000,
+        "type":"flat"},{"bedrooms":3,"distance":"0.14","lat":"51.48926000","lng":"-0.20458200",
+      "price":570000,"type":"flat"},{"bedrooms":3,"distance":"0.15","lat":"51.48675700","lng":"-0.20715700","price":850000,"type":"terraced_house"},{"bedrooms":3,"distance":"0.15","lat":"51.48673200","lng":"-0.20697600","price":920000,"type":"flat"},{"bedrooms":3,"distance":"0.15","lat":"51.49114600","lng":"-0.20799800","price":925000,"type":"flat"},{"bedrooms":3,"distance":"0.18","lat":"51.48827400","lng":"-0.20365400","price":550000,"type":"flat"},{"bedrooms":3,"distance":"0.19","lat":"51.49158500","lng":"-0.20692200","price":1100000,"type":"flat"},{"bedrooms":3,"distance":"0.20","lat":"51.49073300","lng":"-0.21130100","price":730000,"type":"flat"},{"bedrooms":3,"distance":"0.22","lat":"51.48566400","lng":"-0.20766000","price":995000,"type":"flat"},{"bedrooms":3,"distance":"0.22","lat":"51.48632500","lng":"-0.21092800","price":725000,"type":"flat"},{"bedrooms":3,"distance":"0.22","lat":"51.49185560","lng":"-0.20611890","price":495000,"type":"flat"}]},"postcode":"W14 9JH","postcode_type":"full","process_time":"1.55","status":"success","url":"https://propertydata.co.uk/draw?input=W14+9JH"}

@@ -13,9 +13,9 @@ class EndPoints:
     """
         Investigate Using Coroutines to improve the speed of endpoints requester function
     """
-    _api_base_url = config.API_ENDPOINT
-    _key = config.API_KEY
-    _postcode = ""
+    _api_base_url: str = config.API_ENDPOINT
+    _key: str = config.API_KEY
+    _postcode: str = ""
 
     @staticmethod
     def is_api_shutdown() -> bool:
@@ -59,7 +59,7 @@ class EndPoints:
         :return:
         """
 
-        if 'key' not in params:
+        if not('key' in params) or (params['key'] is None):
             return jsonify({'status': 'failure', 'message': 'invalid API Key or no Key '}), 401
 
         if 'property_type' in params:
@@ -71,11 +71,11 @@ class EndPoints:
                 return jsonify({'status': 'failure', 'message': 'Invalid Construction Date'}), 500
 
         if 'bedrooms' in params:
-            if 16 < int(params['bedrooms']) > 0:
+            if (params['bedrooms'] is None) or (16 < int(params['bedrooms']) > 0):
                 return jsonify({'status': 'failure', 'message': 'Invalid Number of Bedrooms'}), 500
 
         if 'bathrooms' in params:
-            if 3 < int(params['bathrooms']) > 0:
+            if (params['bathrooms'] is None) or (3 < int(params['bathrooms']) > 0):
                 return jsonify({'status': 'failure', 'message': 'Invalid Number of Bathrooms'}), 500
 
         if 'finish_quality' in params:
@@ -117,7 +117,7 @@ class EndPoints:
             return is_no_error
 
         except HTTPError as e:
-            self.stats_logger(url=url, params=params, message=str(e.description), state=False)
+            self.stats_logger(url=url, params=params, message=str(e), state=False)
             return jsonify({'status': 'failure', 'message': 'an error occurred : {}'.format(e)}), 500
         except ConnectTimeout as e:
             self.stats_logger(url=url, params=params, message=str(e), state=False)
@@ -129,7 +129,7 @@ class EndPoints:
             self.stats_logger(url=url, params=params, message=str(e), state=False)
             return jsonify({'status': 'failure', 'message': 'request has timeout : {}'.format(e)}), 500
 
-    def valuation_sale(self, postcode: str, internal_area: str, property_type: str, construction_date: str,
+    def valuation_sale(self, postcode: str, internal_area: int, property_type: str, construction_date: str,
                        bedrooms: int, bathrooms: int, finish_quality: str, outdoor_space: str,
                        off_street_parking: str) -> tuple:
         """
@@ -157,7 +157,7 @@ class EndPoints:
         }
         """
 
-        params = {
+        params: dict = {
             "key": self._key,
             "postcode": postcode or self._postcode,
             "internal_area": internal_area,
@@ -169,7 +169,7 @@ class EndPoints:
             "outdoor_space": outdoor_space,
             "off_street_parking": off_street_parking
         }
-        _endpoint = 'valuation-sale'
+        _endpoint: str = 'valuation-sale'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def prices(self, postcode: str, bedrooms: int = 2) -> tuple:
@@ -207,12 +207,12 @@ class EndPoints:
                       "process_time": "1.03"
                     }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
             'bedrooms': bedrooms
         }
-        _endpoint = 'prices'
+        _endpoint: str = 'prices'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def prices_per_sqf(self, postcode: str) -> tuple:
@@ -249,11 +249,11 @@ class EndPoints:
                   "process_time": "0.67"
         }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'prices-per-sqf'
+        _endpoint: str = 'prices-per-sqf'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def sold_prices(self, postcode: str, property_type: str, max_age: int) -> tuple:
@@ -294,13 +294,13 @@ class EndPoints:
                   "process_time": "4.53"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
             'type': property_type,
             'max_age': max_age
         }
-        _endpoint = 'sold-prices'
+        _endpoint: str = 'sold-prices'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def sold_prices_per_sqf(self, postcode: str) -> tuple:
@@ -339,11 +339,11 @@ class EndPoints:
                   "process_time": "3.23"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = "sold-prices-per-sqf"
+        _endpoint: str = "sold-prices-per-sqf"
         return self.requester(self._api_base_url + _endpoint, params)
 
     def growth(self, postcode: str) -> tuple:
@@ -390,11 +390,11 @@ class EndPoints:
                   "process_time": "0.57"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'growth'
+        _endpoint: str = 'growth'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def postcode_key_stats(self, region: str) -> tuple:
@@ -446,11 +446,11 @@ class EndPoints:
                   "process_time": "0.22"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'region': region
         }
-        _endpoint = 'postcode-key-stats'
+        _endpoint: str = 'postcode-key-stats'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def sourced_properties(self, property_list: str, postcode: str, radius: int = 20, results: int = 60) -> tuple:
@@ -514,7 +514,7 @@ class EndPoints:
                   "process_time": "0.32"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'list': property_list,
             'postcode': postcode,
@@ -522,7 +522,7 @@ class EndPoints:
             'results': results
         }
 
-        _endpoint = 'sourced-properties'
+        _endpoint: str = 'sourced-properties'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def property_info(self, property_id: str) -> tuple:
@@ -555,11 +555,11 @@ class EndPoints:
               "process_time": "0.04"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'property_id': property_id
         }
-        _endpoint = 'property-info'
+        _endpoint: str = 'property-info'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def development_gdv(self, postcode: str, flat_2: str, flat_1: str, finish_quality: str) -> tuple:
@@ -604,17 +604,17 @@ class EndPoints:
               "process_time": "1.76"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
             'flat_2': flat_2,
             'flat_1': flat_1,
             finish_quality: finish_quality
         }
-        _endpoint = 'development-gdv'
+        _endpoint: str = 'development-gdv'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def valuation_rent(self, postcode: str, internal_area: str, property_type: str, construction_date: str,
+    def valuation_rent(self, postcode: str, internal_area: int, property_type: str, construction_date: str,
                        bedrooms: int, bathrooms: int, finish_quality: str, outdoor_space: str,
                        off_street_parking: str) -> tuple:
         """
@@ -641,7 +641,7 @@ class EndPoints:
               "process_time": "0.41"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
             'internal_area': internal_area,
@@ -653,7 +653,7 @@ class EndPoints:
             'outdoor_space': outdoor_space,
             'off_street_parking': off_street_parking
         }
-        _endpoint = 'valuation-rent'
+        _endpoint: str = 'valuation-rent'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def rents(self, postcode: str, bedrooms: int) -> tuple:
@@ -694,12 +694,12 @@ class EndPoints:
                   "process_time": "3.66"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
             'bedrooms': bedrooms
         }
-        _endpoint = 'rents'
+        _endpoint: str = 'rents'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def rents_hmo(self, postcode: str) -> tuple:
@@ -804,11 +804,11 @@ class EndPoints:
               "process_time": "0.47"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'rents-hmo'
+        _endpoint: str = 'rents-hmo'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def yields(self, postcode: str, bedrooms: int) -> tuple:
@@ -831,12 +831,12 @@ class EndPoints:
               "process_time": "5.93"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
             'bedrooms': bedrooms
         }
-        _endpoint = 'yields'
+        _endpoint: str = 'yields'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def demand(self, postcode: str) -> tuple:
@@ -856,11 +856,11 @@ class EndPoints:
               "process_time": "9.78"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
         }
-        _endpoint = 'demand'
+        _endpoint: str = 'demand'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def demand_rent(self, postcode: str) -> tuple:
@@ -880,14 +880,14 @@ class EndPoints:
               "process_time": "4.32"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'demand-rent'
+        _endpoint: str = 'demand-rent'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def lha_rate(self, postcode: str, bedrooms: str) -> tuple:
+    def lha_rate(self, postcode: str, bedrooms: int) -> tuple:
         """
             example: https://api.propertydata.co.uk/lha-rate?key={API_KEY}&postcode=W14+9JH&bedrooms=2
         :return:
@@ -905,12 +905,12 @@ class EndPoints:
               "process_time": "3.29"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
             'bedrooms': bedrooms
         }
-        _endpoint = 'lha-rate'
+        _endpoint: str = 'lha-rate'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def agents(self, postcode: str) -> tuple:
@@ -1080,11 +1080,11 @@ class EndPoints:
                   "process_time": "2.65"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'agents'
+        _endpoint: str = 'agents'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def crime(self, postcode: str) -> tuple:
@@ -1120,11 +1120,11 @@ class EndPoints:
               "process_time": "0.06"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'crime'
+        _endpoint: str = 'crime'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def demographics(self, postcode: str) -> tuple:
@@ -1196,11 +1196,11 @@ class EndPoints:
               "process_time": "0.04"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'demographics'
+        _endpoint: str = 'demographics'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def schools(self, postcode: str) -> tuple:
@@ -1367,11 +1367,11 @@ class EndPoints:
               "process_time": "0.75"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'schools'
+        _endpoint: str = 'schools'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def restaurants(self, postcode: str) -> tuple:
@@ -1593,11 +1593,11 @@ class EndPoints:
               "process_time": "3.30"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'restaurants'
+        _endpoint: str = 'restaurants'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def politics(self, postcode: str) -> tuple:
@@ -1627,11 +1627,11 @@ class EndPoints:
                   "process_time": "1.04"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'politics'
+        _endpoint: str = 'politics'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def planning(self, postcode: str, decision_rating: str, category: str, max_age_decision: int,
@@ -1721,7 +1721,7 @@ class EndPoints:
               "process_time": "1.78"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
             'decision_rating': decision_rating,
@@ -1729,7 +1729,7 @@ class EndPoints:
             'max_age_decision': max_age_decision,
             'results': results
         }
-        _endpoint = 'planning'
+        _endpoint: str = 'planning'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def freehold_titles(self, postcode: str) -> tuple:
@@ -1836,8 +1836,8 @@ class EndPoints:
                   "process_time": "1.35"
                 }
         """
-        _endpoint = 'freehold-titles'
-        params = {
+        _endpoint: str = 'freehold-titles'
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
@@ -1882,14 +1882,14 @@ class EndPoints:
               "process_time": "0.56"
             }
         """
-        _endpoint = 'title-info'
-        params = {
+        _endpoint: str = 'title-info'
+        params: dict = {
             'key': self._key,
             'title': title
         }
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def stamp_duty(self, value: str, country: str, additional: str) -> tuple:
+    def stamp_duty(self, value: int, country: str, additional: int) -> tuple:
         """
             example: https://api.propertydata.co.uk/stamp-duty?key={API_KEY}&value=250000&country=scotland&additional=1
         return:
@@ -1902,8 +1902,8 @@ class EndPoints:
               "process_time": "0.03"
             }
         """
-        _endpoint = 'stamp-duty'
-        params = {
+        _endpoint: str = 'stamp-duty'
+        params: dict = {
             'key': self._key,
             'value': value,
             'country': country,
@@ -1923,12 +1923,12 @@ class EndPoints:
                   "process_time": "0.03"
                 }
         """
-        _endpoint = 'area-type'
 
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
+        _endpoint: str = 'area-type'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def green_belt(self, postcode: str) -> tuple:
@@ -1947,11 +1947,11 @@ class EndPoints:
               "process_time": "2.75"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'green-belt'
+        _endpoint: str = 'green-belt'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def national_park(self, postcode: str) -> tuple:
@@ -1969,11 +1969,11 @@ class EndPoints:
                   "process_time": "1.02"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'national-park'
+        _endpoint: str = 'national-park'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def aonb(self, postcode: str) -> tuple:
@@ -1990,11 +1990,11 @@ class EndPoints:
                   "process_time": "1.87"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'aonb'
+        _endpoint: str = 'aonb'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def flood_risk(self, postcode: str) -> tuple:
@@ -2011,11 +2011,11 @@ class EndPoints:
                   "process_time": "0.03"
                 }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'flood-risk'
+        _endpoint: str = 'flood-risk'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def internet_speed(self, postcode: str) -> tuple:
@@ -2039,14 +2039,14 @@ class EndPoints:
               "process_time": "0.03"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'internet-speed'
+        _endpoint: str = 'internet-speed'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def build_cost(self, postcode: str, property_type: str, internal_area: str, finish_quality: str) -> tuple:
+    def build_cost(self, postcode: str, property_type: str, internal_area: int, finish_quality: str) -> tuple:
         """
             description : For a full UK postcode, building type, internal area (in square feet) and finish quality returns the estimated building cost (both total and per square foot
             example: https://api.propertydata.co.uk/build-cost?key={API_KEY}&postcode=CF158RU&type=house&internal_area=2500&finish_quality=medium
@@ -2066,14 +2066,14 @@ class EndPoints:
               "process_time": "0.03"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
             'property_type': property_type,
             'internal_area': internal_area,
             'finish_quality': finish_quality
         }
-        _endpoint = 'internet-speed'
+        _endpoint: str = 'internet-speed'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def ptal(self, postcode: str) -> tuple:
@@ -2090,11 +2090,11 @@ class EndPoints:
               "process_time": "0.05"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'ptal'
+        _endpoint: str = 'ptal'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def council_tax(self, postcode: str) -> tuple:
@@ -2151,11 +2151,11 @@ class EndPoints:
               "process_time": "0.44"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'council-tax'
+        _endpoint: str = 'council-tax'
         return self.requester(self._api_base_url + _endpoint, params)
 
     def floor_areas(self, postcode: str) -> tuple:
@@ -2197,14 +2197,14 @@ class EndPoints:
               "process_time": "0.03"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode
         }
-        _endpoint = 'floor-areas'
+        _endpoint: str = 'floor-areas'
         return self.requester(self._api_base_url + _endpoint, params)
 
-    def listed_buildings(self, postcode: str, grade: str, listed_after: str) -> tuple:
+    def listed_buildings(self, postcode: str, grade: str, listed_after: int) -> tuple:
         """
             description: For a given full English postcode, returns up to 10 of the closest listed buildings which match the supplied filters.
             example: https://api.propertydata.co.uk/listed-buildings?key={API_KEY}&postcode=NW6+7YD&grade=II*&listed_after=1975
@@ -2248,11 +2248,11 @@ class EndPoints:
               "process_time": "0.54"
             }
         """
-        params = {
+        params: dict = {
             'key': self._key,
             'postcode': postcode,
             'grade': grade,
             'listed_after': listed_after
         }
-        _endpoint = 'listed-buildings'
+        _endpoint: str = 'listed-buildings'
         return self.requester(self._api_base_url + _endpoint, params)

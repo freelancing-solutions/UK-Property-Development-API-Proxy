@@ -22,57 +22,72 @@
     </head>
     <body class="hold-transition sidebar-mini">
         <div class="wrapper">
-            <!-- Including Site Header  -->
-            {% block header %}
-                {% include "layouts/header.html" %}
-            {% endblock header %}
-            <!-- Main Sidebar Container -->
-            {% block sidebar %}
-                {% include "layouts/sidebar.html" %}
-            {% endblock sidebar %}
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
             {% block content %}
                 <!-- Page Content Here -->
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <ul class=flashes>
-                    {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                    {% endfor %}
-                    </ul>
-                {% endif %}
-                {% endwith %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Title Information</h3>
+                    </div>
+                <div class="card-body">
+                     <p class="text text-info">For a given land title number (freehold or leasehold) returns the following information:</p>
+                     <p class="text text-info">Example Title Number : ON72197</p>
+                    <div class="row">
+                        <div class="card-body col-md-3 col-lg-3">
+                                <div class="form-group">
+                                    <span class="input-group-append">
+                                        Title Number
+                                    </span>
+                                    <input type="text" class="form-control" id="title_number" />
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-sm" id="search">
+                                        <i class="fas fa-search"></i>
+                                        Search
+                                    </button>
+                                </div>
+                        </div>
+                        <div class="card-body col-md-9 col-lg-9">
+                            <ul class="list-group">
+                                <li class="list-group-item" id="title_num"> Title Number : </li>
+                                <li class="list-group-item" id="address"> Address: </li>
+                                <li class="list-group-item" id="location"> Location: </li>
+                                <li class="list-group-item" id="class"> Class: </li>
+                                <li class="list-group-item" id="covenants"> Covenants: </li>
+                                <li class="list-group-item" id="easements"> Easements: </li>
+                                <li class="list-group-item" id="energy_score"> Energy Score: </li>
+                                <li class="list-group-item" id="estate_interest"> Estate Interest: </li>
+                                <li class="list-group-item" id="internal_area"> Internal Area: </li>
+                                <li class="list-group-item" id="last_sold"> Last Sold: </li>
+                                <li class="list-group-item" id="ownership"> Ownership: </li>
+                                <li class="list-group-item" id="plot_size"> Plot Size: </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
             {% endblock content %}
             </div>
-            <!-- Footer Container -->
-            {% block footer %}
-                {% include "layouts/footer.html" %}
-            {% endblock footer %}
             <!-- Admin Sidebar -->
             {% block adminsidebar %}
                 {% include "layouts/useradmin.html" %}
             {% endblock adminsidebar %}
         </div>
-
-
         <!-- jQuery -->
         <script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
         <!-- Bootstrap 4 -->
         <script src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <!-- Moment -->
         <script src="{{ url_for('static', filename='plugins/moment/moment.min.js') }}"></script>
-
         <script src="{{ url_for('static', filename='plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-
         <!-- AdminLTE App -->
         <script src="{{ url_for('static', filename='js/adminlte.js') }}"></script>
         <!-- Select2 -->
         <script src="{{ url_for('static', filename='plugins/select2/js/select2.full.min.js') }}"></script>
         <script src="{{ url_for('static', filename='plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
-
         <script src="{{ url_for('static', filename='js/handlebars.js')}}"></script>
         <!-- Javascript and css here -->
-        <script src="{{ url_for('static', filename='js/admin/adminbundle.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/embeds/valuation.js')}}"></script>
     </body>
 </html>

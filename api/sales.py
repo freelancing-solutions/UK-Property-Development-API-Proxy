@@ -17,49 +17,49 @@ def valuation_sale(cache: any) -> tuple:
     """
     if not(cache is None):
         return cache
-    valuation_data = request.get_json()
+    valuation_data: dict = request.get_json()
     if 'postcode' in valuation_data:
-        postcode = valuation_data['postcode']
+        postcode: str = valuation_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
     if 'internal_area' in valuation_data:
-        internal_area = valuation_data['internal_area']
+        internal_area: int = int(valuation_data['internal_area'])
     else:
         return jsonify({'status': 'failure', 'message': 'internal_area is required'}), 500
 
     if 'property_type' in valuation_data:
-        property_type = valuation_data['property_type']
+        property_type: str = valuation_data['property_type']
     else:
         return jsonify({'status': 'failure', 'message': 'property_type is required'}), 500
 
     if 'construction_date' in valuation_data:
-        construction_date = valuation_data['construction_date']
+        construction_date: str = valuation_data['construction_date']
     else:
         return jsonify({'status': 'failure', 'message': 'construction_date is required'}), 500
 
     if 'bedrooms' in valuation_data:
-        bedrooms = int(valuation_data['bedrooms'])
+        bedrooms: int = int(valuation_data['bedrooms'])
     else:
         return jsonify({'status': 'failure', 'message': 'bedrooms is required'}), 500
 
     if 'bathrooms' in valuation_data:
-        bathrooms = int(valuation_data['bathrooms'])
+        bathrooms: int = int(valuation_data['bathrooms'])
     else:
         return jsonify({'status': 'failure', 'message': 'bathrooms is required'}), 500
 
     if 'finish_quality' in valuation_data:
-        finish_quality = valuation_data['finish_quality']
+        finish_quality: str = valuation_data['finish_quality']
     else:
         return jsonify({'status': 'failure', 'message': 'finish_quality is required'}), 500
 
     if 'outdoor_space' in valuation_data:
-        outdoor_space = valuation_data['outdoor_space']
+        outdoor_space: str = valuation_data['outdoor_space']
     else:
         return jsonify({'status': 'failure', 'message': 'outdoor_space is required'}), 500
 
     if 'off_street_parking' in valuation_data:
-        off_street_parking = valuation_data['off_street_parking']
+        off_street_parking: str = valuation_data['off_street_parking']
     else:
         return jsonify({'status': 'failure', 'message': 'off_street_parking is required'}), 500
 
@@ -75,14 +75,14 @@ def prices(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    prices_data = request.get_json()
+    prices_data: dict = request.get_json()
     if 'postcode' in prices_data:
-        postcode = prices_data['postcode']
+        postcode: str = prices_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
     if 'bedrooms' in prices_data:
-        bedrooms = int(prices_data['bedrooms'])
+        bedrooms: int = int(prices_data['bedrooms'])
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
@@ -99,9 +99,9 @@ def price_per_sqf(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    prices_data = request.get_json()
+    prices_data: dict = request.get_json()
     if 'postcode' in prices_data:
-        postcode = prices_data['postcode']
+        postcode: str = prices_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
@@ -118,19 +118,19 @@ def sold_prices(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    sold_prices_data = request.get_json()
+    sold_prices_data: dict = request.get_json()
     if 'postcode' in sold_prices_data:
-        postcode = sold_prices_data['postcode']
+        postcode: str = sold_prices_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
     if 'property_type' in sold_prices_data:
-        property_type = sold_prices_data['property_type']
+        property_type: str = sold_prices_data['property_type']
     else:
         return jsonify({'status': 'failure', 'message': 'property_type is required'}), 500
 
     if 'max_age' in sold_prices_data:
-        max_age = sold_prices_data['max_age']
+        max_age: int = int(sold_prices_data['max_age'])
     else:
         return jsonify({'status': 'failure', 'message': 'max_age is required'}), 500
 

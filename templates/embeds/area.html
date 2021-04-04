@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        {% include "layouts/metatags.html" %}
+        <!-- Javascript and css includes here-->
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome-free/css/all.min.css') }}">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css')}}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/adminlte.css') }}">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/select2/css/select2.min.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+        <!-- Bootstrap4 Duallistbox -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css')}}">
+        <!-- Google Font: Source Sans Pro -->
+        <!-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> -->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" >
+<!--EnglandWalesScotlandN. Ireland-->
+<!--For a full UK postcode, returns the type of area.-->
+
+<!--Possible values for the 'area_type' field are: Accessible rural areaRemote rural areaRemote small townRural hamlet and isolated dwellingsRural hamlet and isolated dwellings in a sparse settingRural town and fringeRural town and fringe in a sparse settingRural villageRural village in a sparse settingVery remote rural areaVery remote small townAccessible small townLarge urban areaOther urban areaUrban city and townUrban city and town in a sparse settingUrban major conurbationUrban minor conurbation-->
+    </head>
+    <body class="hold-transition sidebar-mini">
+        <div class="wrapper">
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+            {% block content %}
+                <!-- Page Content Here -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Area Data - Population Demographics</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text text-info"><em>Availability :</em> England, Wales</p>
+                        <p class="text text-info"><em>Description: </em> For a given UK postcode (full, district or sector) returns
+                            population demographic data from the smallest radius at which there is reasonable data.
+                        </p>
+                        <p class="text text-info"><em>Example Postcode: W2 1TR</em></p>
+                    </div>
+                    <div class="card-body row">
+                        <div class="card-body col-md-5 col-lg-5">
+                            <div class="form-group">
+                                <span class="input-group-append">
+                                    Post Code
+                                </span>
+                                <input type="text" class="form-control" id="post_code" />
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-sm" id="search">
+                                    <i class="fas fa-search"></i>
+                                    Search
+                                </button>
+                            </div>
+                    <div class="card-footer">
+                        <div class="card-header">
+                            <h3 class="card-title">Demographics</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless table-responsive">
+                                <thead>
+                                    <tr>
+                                        <td>Age </td>
+                                        <td>Percent</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="demo_data">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                        </div>
+                        <div class="card-body col-md-7 col-lg-7">
+                            <div class="form-group">
+                                <ol>
+                                    <li><label class="text-dark" id="degrees"> Proportion With Degrees : </label></li>
+                                    <li><label class="text-dark" id="vehicles"> Vehicles Per Household : </label></li>
+                                </ol>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-header">
+                                    <h4 class="card-title">Social Grades</h4>
+                                </div>
+                                <ul class="list-group">
+                                    <li class="list-group-item text-dark" id="ab"></li>
+                                    <li class="list-group-item text-dark" id="c1"></li>
+                                    <li class="list-group-item text-dark" id="c2"></li>
+                                    <li class="list-group-item text-dark" id="de"></li>
+                                </ul>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-header">
+                                    <h4 class="card-title">Politics</h4><br/>
+                                    <h5 class="card-title"  id="constituencies"> Constituencies : </h5>
+                                </div>
+                                <ul class="list-group">
+                                    <li class="list-group-item text-dark" id="brexit"></li>
+                                    <li class="list-group-item text-dark" id="conservative"></li>
+                                    <li class="list-group-item text-dark" id="green"></li>
+                                    <li class="list-group-item text-dark" id="labour"></li>
+                                    <li class="list-group-item text-dark" id="liberal"></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            {% endblock content %}
+            </div>
+            <!-- Admin Sidebar -->
+            {% block adminsidebar %}
+                {% include "layouts/useradmin.html" %}
+            {% endblock adminsidebar %}
+        </div>
+
+
+        <!-- jQuery -->
+        <script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+        <!-- Bootstrap 4 -->
+        <script src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <!-- Moment -->
+        <script src="{{ url_for('static', filename='plugins/moment/moment.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+
+        <!-- AdminLTE App -->
+        <script src="{{ url_for('static', filename='js/adminlte.js') }}"></script>
+        <!-- Select2 -->
+        <script src="{{ url_for('static', filename='plugins/select2/js/select2.full.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/handlebars.js')}}"></script>
+        <!-- Javascript and css here -->
+        <script src="{{ url_for('static', filename='js/embeds/area.js')}}"></script>
+    </body>
+</html>

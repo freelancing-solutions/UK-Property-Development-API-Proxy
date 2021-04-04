@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <!-- Javascript and css includes here-->
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome-free/css/all.min.css') }}">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css')}}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/adminlte.css') }}">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/select2/css/select2.min.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+        <!-- Bootstrap4 Duallistbox -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css')}}">
+        <!-- Google Font: Source Sans Pro -->
+        <!-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> -->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" >
+<!--EnglandWalesScotlandN. Ireland-->
+<!--For a full UK postcode, returns the type of area.-->
+
+<!--Possible values for the 'area_type' field are: Accessible rural areaRemote rural areaRemote small townRural hamlet and isolated dwellingsRural hamlet and isolated dwellings in a sparse settingRural town and fringeRural town and fringe in a sparse settingRural villageRural village in a sparse settingVery remote rural areaVery remote small townAccessible small townLarge urban areaOther urban areaUrban city and townUrban city and town in a sparse settingUrban major conurbationUrban minor conurbation-->
+    </head>
+    <body class="hold-transition sidebar-mini">
+        <div class="wrapper">
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+            {% block content %}
+                <!-- Page Content Here -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Property Development Data</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-9 col-lg-9">
+                                    <div class="card">
+                                        <div class="card-header bg-info">
+                                           <span class="input-group-prepend">
+                                            <i class="fas fa-pound-sign"> </i>
+                                                <h3 class="card-title">  Property Sales Data</h3>
+                                           </span>
+                                        </div>
+                                        <div class="card-body">
+                                            Complete asking and sold price data, segmented by number of bedrooms
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="https://property-data-t-37071.nw.r.appspot.com/embeds/sales" class="btn btn-primary btn-sm" target="_self">
+                                                <i class="fa fa-search"> </i> Start Search
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header bg-info">
+                                           <span class="input-group-prepend">
+                                            <i class="fas fa-pound-sign"> </i>
+                                                <h3 class="card-title">  Property Rentals Data</h3>
+                                           </span>
+                                        </div>
+                                        <div class="card-body">
+                                            Statistical average and confidence intervals of live property asking rents (long-let)
+                                        </div>
+                                        <div class="card-footer">
+                                        <div class="card-footer">
+                                            <a href="https://property-data-t-37071.nw.r.appspot.com/embeds/rental" class="btn btn-primary btn-sm" target="_self">
+                                                <i class="fa fa-search"> </i> Start Search
+                                            </a>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header bg-info">
+                                           <span class="input-group-prepend">
+                                            <i class="fas fa-map-marked"> </i>
+                                                <h3 class="card-title">  Demographics Data</h3>
+                                           </span>
+                                        </div>
+                                        <div class="card-body">
+                                            Population demographics data, segmented by postal code
+                                        </div>
+                                        <div class="card-footer">
+                                        <div class="card-footer">
+                                            <a href="https://property-data-t-37071.nw.r.appspot.com/embeds/area" class="btn btn-primary btn-sm" target="_self">
+                                                <i class="fa fa-search"> </i> Start Search
+                                            </a>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header bg-info">
+                                           <span class="input-group-prepend">
+                                            <i class="fas fa-house-user"> </i>
+                                                <h3 class="card-title">  Title Information</h3>
+                                           </span>
+                                        </div>
+                                        <div class="card-body">
+                                            Property Title Information, segmented by title number
+                                        </div>
+                                        <div class="card-footer">
+                                        <div class="card-footer">
+                                            <a href="https://property-data-t-37071.nw.r.appspot.com/embeds/valuation" class="btn btn-primary btn-sm" target="_self">
+                                                <i class="fa fa-search"> </i> Start Search
+                                            </a>
+                                        </div>
+                                        </div>
+
+                                    </div>
+
+                            </div>
+                            <div class="col-md-3 col-lg-3">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            {% endblock content %}
+            </div>
+            <!-- Admin Sidebar -->
+            {% block adminsidebar %}
+                {% include "layouts/useradmin.html" %}
+            {% endblock adminsidebar %}
+        </div>
+
+
+        <!-- jQuery -->
+        <script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+        <!-- Bootstrap 4 -->
+        <script src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <!-- Moment -->
+        <script src="{{ url_for('static', filename='plugins/moment/moment.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+
+        <!-- AdminLTE App -->
+        <script src="{{ url_for('static', filename='js/adminlte.js') }}"></script>
+        <!-- Select2 -->
+        <script src="{{ url_for('static', filename='plugins/select2/js/select2.full.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/handlebars.js')}}"></script>
+        <!-- Javascript and css here -->
+
+    </body>
+</html>

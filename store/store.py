@@ -1,7 +1,7 @@
 from google.cloud import ndb
 from flask import jsonify
 from library.utils import timestamp
-from cachetools import cached, TTLCache
+from cachetools import TTLCache
 from library.config import Config
 
 
@@ -9,7 +9,7 @@ class AdminView:
     """
         i can use adminView to control how to access the database easily
     """
-    cache_ttl = 43200
+    cache_ttl: int = 43200
     client = ndb.Client(namespace="main", project=Config().PROJECT)
     mem_cache = TTLCache(maxsize=2048, ttl=cache_ttl)
 
@@ -28,23 +28,19 @@ class AdminView:
             pass
 
         with self.client.context():
-            cache_values = StoreCache().query(StoreCache.cache_key == key).fetch()
+            cache_values: list = StoreCache().query(StoreCache.cache_key == key).fetch()
             if len(cache_values) > 0:
                 cache = cache_values[0]
-                now = timestamp()
-                if now - cache.last_accessed > self.cache_ttl:
+                if timestamp() - cache.last_accessed > self.cache_ttl:
                     return None
                 return cache.response
             return None
 
     def set_cache(self, key: str, response: dict) -> bool:
-        try:
-            self.mem_cache[key] = response
-        except Exception as e:
-            pass
 
+        self.mem_cache[key] = response
         with self.client.context():
-            cache_values = StoreCache().query(StoreCache.cache_key == key).fetch()
+            cache_values: list = StoreCache().query(StoreCache.cache_key == key).fetch()
             if len(cache_values) > 0:
                 cache = cache_values[0]
             else:
@@ -57,7 +53,7 @@ class AdminView:
 
     def is_shutdown(self) -> bool:
         with self.client.context():
-            api_settings_list = SettingsAPI.query().fetch()
+            api_settings_list: list = SettingsAPI.query().fetch()
             if len(api_settings_list) > 0:
                 api_settings = api_settings_list[0]
             else:
@@ -66,12 +62,12 @@ class AdminView:
             return api_settings.user_shutdown
 
     def update_property_types(self, property_selections: list) -> tuple:
-        selected_properties = []
+        selected_properties: list = []
         for _, value in enumerate(property_selections):
-            if property_selections[value]:
-                selected_properties.append(value)
+            selected_properties.append(value) if property_selections[value] else ""
+
         with self.client.context():
-            defaults_list = DefaultAPIQueries.query().fetch()
+            defaults_list: list = DefaultAPIQueries.query().fetch()
             if len(defaults_list) > 0:
                 default_api = defaults_list[0]
             else:
@@ -81,12 +77,11 @@ class AdminView:
         return jsonify({'status': 'success', 'message': "property types successfully updated"}), 200
 
     def update_dates_selected(self, dates_selected: list) -> tuple:
-        selected_properties = []
+        selected_properties: list = []
         for _, value in enumerate(dates_selected):
-            if dates_selected[value]:
-                selected_properties.append(value)
+            selected_properties.append(value) if dates_selected[value] else ""
         with self.client.context():
-            defaults_list = DefaultAPIQueries.query().fetch()
+            defaults_list: list = DefaultAPIQueries.query().fetch()
             if len(defaults_list) > 0:
                 default_api = defaults_list[0]
             else:
@@ -97,7 +92,7 @@ class AdminView:
 
     def update_finish_quality(self, finish_quality: list) -> tuple:
         with self.client.context():
-            defaults_list = DefaultAPIQueries.query().fetch()
+            defaults_list: list = DefaultAPIQueries.query().fetch()
             if len(defaults_list) > 0:
                 default_api = defaults_list[0]
             else:
@@ -110,7 +105,7 @@ class AdminView:
     def fetch_all_admin_defaults(self) -> dict:
 
         with self.client.context():
-            defaults_list = DefaultAPIQueries.query().fetch()
+            defaults_list: list = DefaultAPIQueries.query().fetch()
             if len(defaults_list) > 0:
                 default_api = defaults_list[0]
             else:
@@ -120,72 +115,68 @@ class AdminView:
 
     def fetch_property_types(self) -> dict:
         with self.client.context():
-            defaults_list = DefaultAPIQueries.query().fetch()
+            defaults_list: list = DefaultAPIQueries.query().fetch()
             if len(defaults_list) > 0:
                 default_api = defaults_list[0]
             else:
                 default_api = DefaultAPIQueries()
-
             return jsonify({'status': 'success', 'payload': default_api.get_property_types(),
                             'message': 'successfully fetched property types'})
 
     def fetch_finishing_quality(self) -> dict:
         with self.client.context():
-            defaults_list = DefaultAPIQueries.query().fetch()
+            defaults_list: list = DefaultAPIQueries.query().fetch()
             if len(defaults_list) > 0:
                 default_api = defaults_list[0]
             else:
                 default_api = DefaultAPIQueries()
-
             return jsonify({'status': 'success', 'payload': default_api.get_finish_quality(),
                             'message': 'successfully fetched property types'})
 
     def get_construction_dates(self) -> dict:
         with self.client.context():
-            defaults_list = DefaultAPIQueries.query().fetch()
+            defaults_list: list = DefaultAPIQueries.query().fetch()
             if len(defaults_list) > 0:
                 default_api = defaults_list[0]
             else:
                 default_api = DefaultAPIQueries()
-
             return jsonify({'status': 'success', 'payload': default_api.get_construction_dates(),
                             'message': 'successfully fetched construction dates'})
 
     def set_shutdown_status(self, status: bool) -> dict:
         with self.client.context():
-            settings_list = SettingsAPI.query().fetch()
+            settings_list: list = SettingsAPI.query().fetch()
             if len(settings_list) > 0:
-                default_settings = settings_list[0]
+                default_settings: SettingsAPI = settings_list[0]
             else:
-                default_settings = SettingsAPI()
+                default_settings: SettingsAPI = SettingsAPI()
 
             default_settings.set_shutdown_status(status=status)
             default_settings.put()
             if status:
-                message = 'API is Shutting down ...'
+                message: str = 'API is Shutting down ...'
             else:
-                message = 'API is Restarting ....'
+                message: str = 'API is Restarting ....'
             return jsonify({'status': 'success', 'payload': default_settings.to_dict(),
                             'message': message})
 
     def get_settings(self) -> dict:
         with self.client.context():
-            settings_list = SettingsAPI.query().fetch()
+            settings_list: list = SettingsAPI.query().fetch()
             if len(settings_list) > 0:
-                default_settings = settings_list[0]
+                default_settings: SettingsAPI = settings_list[0]
             else:
-                default_settings = SettingsAPI()
-
+                default_settings: SettingsAPI = SettingsAPI()
             return jsonify({'status': 'success', 'payload': default_settings.to_dict(),
                             'message': 'Successfully fetched api settings'})
 
     def add_successful_request(self) -> bool:
         with self.client.context():
-            settings_list = SettingsAPI.query().fetch()
+            settings_list: list = SettingsAPI.query().fetch()
             if len(settings_list) > 0:
-                default_settings = settings_list[0]
+                default_settings: SettingsAPI = settings_list[0]
             else:
-                default_settings = SettingsAPI()
+                default_settings: SettingsAPI = SettingsAPI()
 
             default_settings.add_successful_request()
             default_settings.put()
@@ -193,11 +184,11 @@ class AdminView:
 
     def add_failed_request(self) -> bool:
         with self.client.context():
-            settings_list = SettingsAPI.query().fetch()
+            settings_list: list = SettingsAPI.query().fetch()
             if len(settings_list) > 0:
-                default_settings = settings_list[0]
+                default_settings: SettingsAPI = settings_list[0]
             else:
-                default_settings = SettingsAPI()
+                default_settings: SettingsAPI = SettingsAPI()
 
             default_settings.add_error_request()
             default_settings.put()
@@ -205,11 +196,11 @@ class AdminView:
 
     def add_cached_request(self) -> bool:
         with self.client.context():
-            settings_list = SettingsAPI.query().fetch()
+            settings_list: list = SettingsAPI.query().fetch()
             if len(settings_list) > 0:
-                default_settings = settings_list[0]
+                default_settings: SettingsAPI = settings_list[0]
             else:
-                default_settings = SettingsAPI()
+                default_settings: SettingsAPI = SettingsAPI()
 
             default_settings.add_cached_request()
             default_settings.put()

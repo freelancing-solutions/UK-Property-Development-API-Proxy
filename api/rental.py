@@ -18,50 +18,50 @@ def valuation_rent(cache: any) -> tuple:
     """
     if not (cache is None):
         return cache
-    valuation_rent_data = request.get_json()
+    valuation_rent_data: dict = request.get_json()
 
     if 'postcode' in valuation_rent_data:
-        postcode = valuation_rent_data['postcode']
+        postcode: str = valuation_rent_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
     if 'internal_area' in valuation_rent_data:
-        internal_area = valuation_rent_data['internal_area']
+        internal_area: int = int(valuation_rent_data['internal_area'])
     else:
         return jsonify({'status': 'failure', 'message': 'internal_area is required'}), 500
 
     if 'property_type' in valuation_rent_data:
-        property_type = valuation_rent_data['property_type']
+        property_type: str = valuation_rent_data['property_type']
     else:
         return jsonify({'status': 'failure', 'message': 'property_type is required'}), 500
 
     if 'construction_date' in valuation_rent_data:
-        construction_date = valuation_rent_data['construction_date']
+        construction_date: str = valuation_rent_data['construction_date']
     else:
         return jsonify({'status': 'failure', 'message': 'construction_date is required'}), 500
 
     if 'bedrooms' in valuation_rent_data:
-        bedrooms = int(valuation_rent_data['bedrooms'])
+        bedrooms: int = int(valuation_rent_data['bedrooms'])
     else:
         return jsonify({'status': 'failure', 'message': 'bedrooms is required'}), 500
 
     if 'bathrooms' in valuation_rent_data:
-        bathrooms = int(valuation_rent_data['bathrooms'])
+        bathrooms: int = int(valuation_rent_data['bathrooms'])
     else:
         return jsonify({'status': 'failure', 'message': 'bathrooms is required'}), 500
 
     if 'finish_quality' in valuation_rent_data:
-        finish_quality = valuation_rent_data['finish_quality']
+        finish_quality: str = valuation_rent_data['finish_quality']
     else:
         return jsonify({'status': 'failure', 'message': 'finish_quality is required'}), 500
 
     if 'outdoor_space' in valuation_rent_data:
-        outdoor_space = valuation_rent_data['outdoor_space']
+        outdoor_space: str = valuation_rent_data['outdoor_space']
     else:
         return jsonify({'status': 'failure', 'message': 'outdoor_space is required'}), 500
 
     if 'off_street_parking' in valuation_rent_data:
-        off_street_parking = valuation_rent_data['off_street_parking']
+        off_street_parking: str = valuation_rent_data['off_street_parking']
     else:
         return jsonify({'status': 'failure', 'message': 'off_street_parking is required'}), 500
 
@@ -76,18 +76,17 @@ def rents(cache: any) -> tuple:
         args:
             postcode: str
             bedrooms: int
-    :return:
+    :return: tuple
     """
     if not(cache is None):
         return cache
-    rents_data = request.get_json()
+    rents_data: dict = request.get_json()
     if 'postcode' in rents_data:
-        postcode = rents_data['postcode']
+        postcode: str = rents_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
-
     if 'bedrooms' in rents_data:
-        bedrooms = rents_data['bedrooms']
+        bedrooms: int = int(rents_data['bedrooms'])
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
@@ -103,9 +102,9 @@ def rents_hmo(cache: any) -> tuple:
     """
     if not(cache is None):
         return cache
-    rents_hmo_data = request.get_json()
+    rents_hmo_data: dict = request.get_json()
     if 'postcode' in rents_hmo_data:
-        postcode = rents_hmo_data['postcode']
+        postcode: str = rents_hmo_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
@@ -122,13 +121,13 @@ def yields(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    yields_data = request.get_json()
+    yields_data: dict = request.get_json()
     if 'postcode' in yields_data:
-        postcode = yields_data['postcode']
+        postcode: str = yields_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
     if 'bedrooms' in yields_data:
-        bedrooms = int(yields_data['bedrooms'])
+        bedrooms: int = int(yields_data['bedrooms'])
     else:
         return jsonify({'status': 'failure', 'message': 'bedrooms is required'}), 500
 
@@ -140,10 +139,9 @@ def yields(cache: any) -> tuple:
 def demand_rent(cache: any) -> tuple:
     if not(cache is None):
         return cache
-
-    demand_rent_data = request.get_json()
+    demand_rent_data: dict = request.get_json()
     if 'postcode' in demand_rent_data:
-        postcode = demand_rent_data['postcode']
+        postcode: str = demand_rent_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
@@ -156,14 +154,14 @@ def lha_rent(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    lha_data = request.get_json()
+    lha_data: dict = request.get_json()
     if 'postcode' in lha_data:
-        postcode = lha_data['postcode']
+        postcode: str = lha_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
     if 'bedrooms' in lha_data:
-        bedrooms = lha_data['bedrooms']
+        bedrooms: int = int(lha_data['bedrooms'])
     else:
         return jsonify({'status': 'failure', 'message': 'bedrooms is required'}), 500
 

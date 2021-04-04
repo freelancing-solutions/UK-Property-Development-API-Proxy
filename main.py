@@ -35,7 +35,6 @@ cors = CORS(app, resources={r"/api/*": {"origins": config.AUTHORIZED_ADDRESSES,
                                         'Content-Type': "application/json"}})
 
 # Registering API's
-
 app.register_blueprint(sales)
 app.register_blueprint(rental)
 app.register_blueprint(area)
@@ -92,17 +91,29 @@ def admin_defaults(path):
         if path == "construction-dates":
             request_data = request.get_json()
             return admin_view.update_dates_selected(dates_selected=request_data)
-
         if path == "finish-quality":
             request_data = request.get_json()
             return admin_view.update_finish_quality(finish_quality=request_data)
-
         if path == "shutdown-api":
             return admin_view.set_shutdown_status(status=True)
-
         if path == "restart-api":
             return admin_view.set_shutdown_status(status=False)
 
+
+@app.route("/embeds/<path:path>", methods=["GET", "POST"])
+def embeds(path):
+    if path == "sales":
+        return render_template('embeds/sales.html')
+    elif path == "valuation":
+        return render_template('embeds/valuation.html')
+    elif path == "area":
+        return render_template('embeds/area.html')
+    elif path == "rental":
+        return render_template('embeds/rental.html')
+    elif path == "property":
+        return render_template('embeds/property_development.html')
+    else:
+        return render_template('embeds/property_development.html')
 
 # handling warp requests
 @app.route('/_ah/warmup')

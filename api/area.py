@@ -11,9 +11,9 @@ def crime(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    crime_data = request.get_json()
-    if 'postcode' in crime_data:
-        postcode = crime_data['postcode']
+    crime_data: dict = request.get_json()
+    if 'postcode' in crime_data and not(crime_data['postcode'] is None):
+        postcode: str = crime_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
     return EndPoints().agents(postcode=postcode)
@@ -25,9 +25,9 @@ def demographics(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    demo_data = request.get_json()
-    if 'postcode' in demo_data:
-        postcode = demo_data['postcode']
+    demo_data: dict = request.get_json()
+    if 'postcode' in demo_data and not (demo_data['postcode']  == ""):
+        postcode: str = demo_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
@@ -40,9 +40,9 @@ def schools(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    schools_data = request.get_json()
-    if 'postcode' in schools_data:
-        postcode = schools_data['postcode']
+    schools_data: dict = request.get_json()
+    if 'postcode' in schools_data and not(schools_data['postcode']  == ""):
+        postcode: str = schools_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
@@ -55,9 +55,9 @@ def restaurants(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    rest_data = request.get_json()
-    if 'postcode' in rest_data:
-        postcode = rest_data['postcode']
+    rest_data: dict = request.get_json()
+    if 'postcode' in rest_data and not(rest_data['postcode']  == ""):
+        postcode: str = rest_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
@@ -70,9 +70,9 @@ def politics(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    politic_data = request.get_json()
-    if 'postcode' in politic_data:
-        postcode = politic_data['postcode']
+    politic_data: dict = request.get_json()
+    if 'postcode' in politic_data and not (politic_data['postcode']  == ""):
+        postcode: str = politic_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
 
@@ -85,9 +85,9 @@ def area_type(cache: any) -> tuple:
     if not(cache is None):
         return cache
 
-    area_data = request.get_json()
-    if 'postcode' in area_data:
-        postcode = area_data['postcode']
+    area_data: dict = request.get_json()
+    if 'postcode' in area_data and not (area_data['postcode']  == ""):
+        postcode: str = area_data['postcode']
     else:
         return jsonify({'status': 'failure', 'message': 'postcode is required'}), 500
     return EndPoints().area_type(postcode=postcode)
