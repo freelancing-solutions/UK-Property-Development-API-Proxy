@@ -110,10 +110,11 @@ def embeds(path):
         return render_template('embeds/area.html')
     elif path == "rental":
         return render_template('embeds/rental.html')
-    elif path == "property":
+    elif path == "index":
         return render_template('embeds/property_development.html')
     else:
         return render_template('embeds/property_development.html')
+
 
 # handling warp requests
 @app.route('/_ah/warmup')
@@ -125,9 +126,8 @@ def warmup():
 @app.route('/debug-sentry')
 def trigger_error():
     division_by_zero = 1 / 0
+    return '', 500, {}
 
 
 if __name__ == '__main__':
     app.run(debug=config.IS_DEBUG, use_reloader=config.IS_DEBUG, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
-
-

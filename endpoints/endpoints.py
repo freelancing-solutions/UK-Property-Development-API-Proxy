@@ -59,7 +59,7 @@ class EndPoints:
         :return:
         """
 
-        if not('key' in params) or (params['key'] is None):
+        if not('key' in params) or (params['key'] == ""):
             return jsonify({'status': 'failure', 'message': 'invalid API Key or no Key '}), 401
 
         if 'property_type' in params:
@@ -71,11 +71,11 @@ class EndPoints:
                 return jsonify({'status': 'failure', 'message': 'Invalid Construction Date'}), 500
 
         if 'bedrooms' in params:
-            if (params['bedrooms'] is None) or (16 < int(params['bedrooms']) > 0):
+            if (params['bedrooms'] == "") or (16 < int(params['bedrooms']) > 0):
                 return jsonify({'status': 'failure', 'message': 'Invalid Number of Bedrooms'}), 500
 
         if 'bathrooms' in params:
-            if (params['bathrooms'] is None) or (3 < int(params['bathrooms']) > 0):
+            if (params['bathrooms'] == "") or (3 < int(params['bathrooms']) > 0):
                 return jsonify({'status': 'failure', 'message': 'Invalid Number of Bathrooms'}), 500
 
         if 'finish_quality' in params:
@@ -455,7 +455,9 @@ class EndPoints:
 
     def sourced_properties(self, property_list: str, postcode: str, radius: int = 20, results: int = 60) -> tuple:
         """
-        example: https://api.propertydata.co.uk/sourced-properties?key={API_KEY}&list=repossessed-properties&postcode=NW6+7YD&radius=20&results=60
+        example:
+        https://api.propertydata.co.uk/sourced-properties?key={API_KEY}&list=repossessed-properties&postcode=
+        NW6+7YD&radius=20&results=60
         :return:
                 {
                   "status": "success",
@@ -564,7 +566,8 @@ class EndPoints:
 
     def development_gdv(self, postcode: str, flat_2: str, flat_1: str, finish_quality: str) -> tuple:
         """
-        :example: https://api.propertydata.co.uk/development-gdv?key={API_KEY}&postcode=NW6+7YD&flat_2=4&flat_1=1&finish_quality=medium
+        :example: https://api.propertydata.co.uk/development-gdv?
+        key={API_KEY}&postcode=NW6+7YD&flat_2=4&flat_1=1&finish_quality=medium
 
         :return:
             {
@@ -618,7 +621,9 @@ class EndPoints:
                        bedrooms: int, bathrooms: int, finish_quality: str, outdoor_space: str,
                        off_street_parking: str) -> tuple:
         """
-            :example: https://api.propertydata.co.uk/valuation-rent?key={API_KEY}&postcode=OX41YB&internal_area=828&property_type=flat&construction_date=pre_1914&bedrooms=3&bathrooms=1&finish_quality=below_average&outdoor_space=garden&off_street_parking=0
+            :example: https://api.propertydata.co.uk/valuation-rent?
+            key={API_KEY}&postcode=OX41YB&internal_area=828&property_type=flat&construction_date=pre_1914&bedrooms=3
+            &bathrooms=1&finish_quality=below_average&outdoor_space=garden&off_street_parking=0
             :return:
             {
               "status": "success",
@@ -1637,7 +1642,8 @@ class EndPoints:
     def planning(self, postcode: str, decision_rating: str, category: str, max_age_decision: int,
                  results: int) -> tuple:
         """
-            example: https://api.propertydata.co.uk/planning?key={API_KEY}&postcode=NW6+7YD&decision_rating=positive&category=EXTENSION&max_age_decision=120&results=20
+            example: https://api.propertydata.co.uk/planning?key={API_KEY}&postcode=NW6+7YD&decision_rating=positive
+            &category=EXTENSION&max_age_decision=120&results=20
         return:
             {
               "status": "success",
@@ -1649,7 +1655,8 @@ class EndPoints:
               "data": {
                 "planning_applications": [
                   {
-                    "url": "https://pa.brent.gov.uk/online-applications/applicationDetails.do?keyVal=DCAPR_149804&activeTab=summary",
+                    "url": "https://pa.brent.gov.uk/online-applications/applicationDetails.do?
+                    keyVal=DCAPR_149804&activeTab=summary",
                     "address": "27 Winchester Avenue, Kilburn, London, NW6 7TT",
                     "agent": {
                       "name": "Mr Eric Haendler",
@@ -1661,7 +1668,8 @@ class EndPoints:
                     "case_officer": "Kim Pang",
                     "reference": "20/1291",
                     "category": "EXTENSION",
-                    "proposal": "Certificate of lawfulness for proposed erection of single storey outbuilding to rear of dwellinghouse.",
+                    "proposal": "Certificate of lawfulness for proposed erection of single storey outbuilding to rear
+                    of dwellinghouse.",
                     "type": "Certificate of Lawfulness - Proposed",
                     "est_construction_cost": "£0 - 100k",
                     "status": "Decided",
@@ -1683,7 +1691,8 @@ class EndPoints:
                     "distance": "0.07"
                   },
                   {
-                    "url": "https://pa.brent.gov.uk/online-applications/applicationDetails.do?keyVal=DCAPR_147687&activeTab=summary",
+                    "url": "https://pa.brent.gov.uk/online-applications/applicationDetails.do?keyVal=DCAPR_147687&
+                    activeTab=summary",
                     "address": "17 The Avenue, London, NW6 7NR",
                     "agent": {
                       "name": "Ms Georgina Turvey",
@@ -1695,7 +1704,9 @@ class EndPoints:
                     "case_officer": "Lena Summers",
                     "reference": "19/3918",
                     "category": "EXTENSION",
-                    "proposal": "Erection of a single storey side and rear extension, first floor side extension, replacement of rear first floor window with juliet balcony, and conversion of garage into a habitable room with replacement of garage door with window to dwellinghouse",
+                    "proposal": "Erection of a single storey side and rear extension, first floor side extension,
+                    replacement of rear first floor window with juliet balcony, and conversion of garage into a
+                    habitable room with replacement of garage door with window to dwellinghouse",
                     "type": "Householder",
                     "est_construction_cost": "£0 - 100k",
                     "status": "Decided",
@@ -1933,7 +1944,8 @@ class EndPoints:
 
     def green_belt(self, postcode: str) -> tuple:
         """
-            description: For a full UK postcode, returns whether the property is within the green belt (and if applicable the green belt name).
+            description: For a full UK postcode, returns whether the property is within the green belt (and if
+            applicable the green belt name).
 
             example: https://api.propertydata.co.uk/green-belt?key={API_KEY}&postcode=OX44+9LW
 
@@ -1956,7 +1968,8 @@ class EndPoints:
 
     def national_park(self, postcode: str) -> tuple:
         """
-            description: For a full UK postcode, returns whether the property is within a national park (and if applicable the national park name).
+            description: For a full UK postcode, returns whether the property is within a national park (and if
+            applicable the national park name).
             example: https://api.propertydata.co.uk/national-park?key={API_KEY}&postcode=EX35+6EQ
 
         return:
@@ -1978,7 +1991,8 @@ class EndPoints:
 
     def aonb(self, postcode: str) -> tuple:
         """
-            description: For a full UK postcode, returns whether the property is within an Area of Outstanding National Beauty (AONB) (and if applicable the AONB name).
+            description: For a full UK postcode, returns whether the property is within an Area of Outstanding National
+            Beauty (AONB) (and if applicable the AONB name).
             example: https://api.propertydata.co.uk/aonb?key={API_KEY}&postcode=OX7+3EX
         return:
                 {
@@ -1999,7 +2013,8 @@ class EndPoints:
 
     def flood_risk(self, postcode: str) -> tuple:
         """
-            description: For a full postcode in England, returns the risk of flooding from rivers and sea. Possible flood risk values are
+            description: For a full postcode in England, returns the risk of flooding from rivers and sea.
+            Possible flood risk values are
             example: https://api.propertydata.co.uk/flood-risk?key={API_KEY}&postcode=OX7+3EX
 
         return:
@@ -2048,8 +2063,10 @@ class EndPoints:
 
     def build_cost(self, postcode: str, property_type: str, internal_area: int, finish_quality: str) -> tuple:
         """
-            description : For a full UK postcode, building type, internal area (in square feet) and finish quality returns the estimated building cost (both total and per square foot
-            example: https://api.propertydata.co.uk/build-cost?key={API_KEY}&postcode=CF158RU&type=house&internal_area=2500&finish_quality=medium
+            description : For a full UK postcode, building type, internal area (in square feet) and finish quality
+            returns the estimated building cost (both total and per square foot
+            example: https://api.propertydata.co.uk/build-cost?key={API_KEY}&postcode=CF158RU&type=house
+            &internal_area=2500&finish_quality=medium
 
         return:
             {
@@ -2078,7 +2095,8 @@ class EndPoints:
 
     def ptal(self, postcode: str) -> tuple:
         """
-            description: For a full UK postcode within Greater London, returns the PTAL score. Possible values for the 'ptal' field from worst to best are: 01a1b23456a6b
+            description: For a full UK postcode within Greater London, returns the PTAL score. Possible values for the
+            'ptal' field from worst to best are: 01a1b23456a6b
             example: https://api.propertydata.co.uk/ptal?key={API_KEY}&postcode=W14+9JH
 
         return:
@@ -2099,7 +2117,9 @@ class EndPoints:
 
     def council_tax(self, postcode: str) -> tuple:
         """
-            description: For a full UK postcode, returns analytics on average council tax by property band in the council area, plus a rating on how well this council is performing on keeping tax low. Additionally returns known individual property council tax bands for the area.
+            description: For a full UK postcode, returns analytics on average council tax by property band in
+            the council area, plus a rating on how well this council is performing on keeping tax low.
+            Additionally returns known individual property council tax bands for the area.
             example: https://api.propertydata.co.uk/council-tax?key={API_KEY}&postcode=W14+9JH
 
         return:
@@ -2121,7 +2141,8 @@ class EndPoints:
                 "band_g": "1,320.70",
                 "band_h": "1,584.84"
               },
-              "note": "These figures include adult social care and the Greater London Authority precept (if applicable) but exclude any parish precepts.",
+              "note": "These figures include adult social care and the Greater London Authority precept (if applicable)
+              but exclude any parish precepts.",
               "properties": [
                 {
                   "address": "MAIS 1ST 2ND & 3RD FLRS AT 3, CHARLEVILLE ROAD, LONDON, W14 9JH",
@@ -2206,8 +2227,10 @@ class EndPoints:
 
     def listed_buildings(self, postcode: str, grade: str, listed_after: int) -> tuple:
         """
-            description: For a given full English postcode, returns up to 10 of the closest listed buildings which match the supplied filters.
-            example: https://api.propertydata.co.uk/listed-buildings?key={API_KEY}&postcode=NW6+7YD&grade=II*&listed_after=1975
+            description: For a given full English postcode, returns up to 10 of the closest listed buildings which match
+             the supplied filters.
+            example: https://api.propertydata.co.uk/listed-buildings?key={API_KEY}&postcode=NW6+7YD&
+            grade=II*&listed_after=1975
 
         return:
         {

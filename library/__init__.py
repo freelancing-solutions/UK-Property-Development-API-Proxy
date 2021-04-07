@@ -15,11 +15,8 @@ def api_cache_decorator(fn):
     @wraps(fn)
     def decorated(*args, **kwargs):
         try:
-            print("Inside decorated:")
-            print("Json data : {} ".format(request.get_json()))
             key = (request.url.split("/")[-1] + generate_key(request.get_json())).replace(" ", "")
         except Exception as e:
-            print("Error creating Key")
             return fn(None, *args, **kwargs)
 
         response = admin_view.get_cache(key)

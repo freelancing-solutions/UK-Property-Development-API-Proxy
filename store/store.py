@@ -14,6 +14,7 @@ class AdminView:
     mem_cache = TTLCache(maxsize=2048, ttl=cache_ttl)
 
     def __init__(self, config):
+        super(AdminView, self).__init__()
         self.cache_ttl = config.CACHE_TTL
         self.mem_cache = TTLCache(maxsize=config.CACHE_SIZE, ttl=config.CACHE_TTL)
 

@@ -5,3 +5,5 @@
 *.map
 __pycache__
 app.yaml
+automations.txt
+*.db
