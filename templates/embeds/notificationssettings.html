@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        {% include "layouts/metatags.html" %}
+        <!-- Javascript and css includes here-->
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome-free/css/all.min.css') }}">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/ionicons.min.css')}}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/adminlte.css') }}">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/select2/css/select2.min.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+        <!-- Bootstrap4 Duallistbox -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css')}}">
+        <!-- Google Font: Source Sans Pro -->
+        <!-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> -->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" >
+
+    </head>
+    <body class="hold-transition sidebar-mini">
+        <div class="wrapper">
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+            {% block content %}
+                <!-- Page Content Here -->
+                <div class="card">
+                    <div class="card-header bg-success">
+                        <span class="input-group-append">
+                            <i class="fas fa-cogs"> &nbsp; </i>
+                            <h3 class="card-title">
+                                Notifications Settings
+                            </h3>
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-header">
+                            <p class="card-text text-info">
+                                <strong>description:</strong> You can only be notified on <em>Properties for Sale</em> or <em>Properties for Rental</em>
+                                Select your Option then the <em>Postcode</em> to indicate the area then that's it
+                                your search will be performed daily and results sent to your inbox
+                            </p>
+                            <p class="card-text text-info">
+                                <strong>Availability: England, Wales, Scotland, N.Ireland</strong>
+                            </p>
+
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label>Search Option</label>
+                                <select class="form-control" id="search_option">
+                                    <option id="sales">Property for Sale</option>
+                                    <option id="rental">Property Rentals</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Postcode</label>
+                                <input class="form-control" id="postcode" />
+                            </div>
+                            <div class="form-group">
+                                <label>Email </label>
+                                <input class="form-control" id="email" />
+                            </div>
+
+                            <div class="form-group">
+                                <button type="button" id="submit_butt" class="btn btn-primary"><i class="fas fa-archive"> &nbsp; </i> Set Daily Notifications </button>
+                            </div>
+                            <div class="form-group" id="message">
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endblock content %}
+            </div>
+            <!-- Admin Sidebar -->
+            {% block adminsidebar %}
+                {% include "layouts/useradmin.html" %}
+            {% endblock adminsidebar %}
+        </div>
+
+
+        <!-- jQuery -->
+        <script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+        <!-- Bootstrap 4 -->
+        <script src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <!-- Moment -->
+        <script src="{{ url_for('static', filename='plugins/moment/moment.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+
+        <!-- AdminLTE App -->
+        <script src="{{ url_for('static', filename='js/adminlte.js') }}"></script>
+        <!-- Select2 -->
+        <script src="{{ url_for('static', filename='plugins/select2/js/select2.full.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/handlebars.js')}}"></script>
+        <!-- Javascript and css here -->
+        <script src="{{ url_for('static', filename='js/embeds/settings.js')}}"></script>
+    </body>
+</html>

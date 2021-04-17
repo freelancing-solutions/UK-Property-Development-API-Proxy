@@ -1,5 +1,8 @@
+import typing
 from google.cloud import ndb
 from flask import jsonify
+from google.cloud.ndb.exceptions import BadValueError
+
 from library.utils import timestamp
 from cachetools import TTLCache
 from library.config import Config
@@ -207,6 +210,44 @@ class AdminView:
             default_settings.put()
             return True
 
+    def save_notification_settings(self, search: str, postcode: str, email: str) -> tuple:
+        with self.client.context():
+            notifications_list: typing.List[NotificationsSettings] = NotificationsSettings.query(
+                NotificationsSettings.email == email).fetch()
+            if len(notifications_list) == 0:
+                try:
+                    key = NotificationsSettings(email=email, search=search, postcode=postcode).put()
+                except TypeError:
+                    return jsonify({'status': 'failure', 'message': 'Database Error inform admin'}), 500
+                except BadValueError:
+                    return jsonify({'status': 'failure', 'message': 'Database Error inform admin'}), 500
+
+                if key is not None:
+                    message: str = '''Successfully updated notifications, you will periodically receive emails with listed 
+                    properties suitable to your search criteria'''
+                    return jsonify({'status': 'success', 'message': message}), 200
+                else:
+                    message: str = '''Error saving notification settings please inform admin through chat'''
+                    return jsonify({'status': 'failure', 'message': message}), 500
+            else:
+                message: str = '''Notifications Setting already saved'''
+                return jsonify({'status': 'failure', 'message': message}), 500
+
+    def add_notifications_user(self, email: str, name: str, uid: str) -> tuple:
+        with self.client.context():
+            email_list_instance: typing.List[EmailListUsers] = EmailListUsers.query(EmailListUsers.email == email).fetch()
+            if len(email_list_instance) > 0:
+                message: str = ''' Notification user already exist'''
+                return jsonify({'status': 'failure', 'message': message}), 500
+            else:
+                try:
+                    key = EmailListUsers(email=email, name=name, uid=uid).put()
+                    return jsonify({'status': 'failure', 'message': 'Successfully created new mailing list user'}), 200
+                except TypeError:
+                    return jsonify({'status': 'failure', 'message': 'Database Error inform admin'}), 500
+                except BadValueError:
+                    return jsonify({'status': 'failure', 'message': 'Database Error inform admin'}), 500
+
 
 class DefaultAPIQueries(ndb.Model):
     property_types = ndb.StringProperty(default="flat,detached_house,terraced_house,semi_detached_house")
@@ -304,4 +345,17 @@ class StoreCache(ndb.Model):
     last_accessed = ndb.IntegerProperty()
 
 
-admin_view = AdminView(config=Config())
+class NotificationsSettings(ndb.Model):
+    email: str = ndb.StringProperty(required=True, indexed=True)
+    search: str = ndb.StringProperty(required=True)
+    postcode: str = ndb.StringProperty(required=True)
+
+
+class EmailListUsers(ndb.Model):
+    uid: str = ndb.StringProperty(required=True)
+    email: str = ndb.StringProperty(required=True)
+    name: str = ndb.StringProperty(required=True)
+    time_created: int = ndb.IntegerProperty(default=timestamp())
+
+
+admin_view: AdminView = AdminView(config=Config())

@@ -4,13 +4,16 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS, cross_origin
+
+
 from library.config import Config
-from store.store import admin_view
+from store.store import admin_view, AdminView
 
 config = Config()
 if config.IS_DEBUG:
     config.set_debug_cors_header()
 # Import API's
+from api.automations import automations_bp
 from api.sales import sales
 from api.rental import rental
 from api.area import area
@@ -33,13 +36,13 @@ cors = CORS(app, resources={r"/api/*": {"origins": config.AUTHORIZED_ADDRESSES,
                                         "max-age": "43200",
                                         "automatic_options": True,
                                         'Content-Type': "application/json"}})
-
-# Registering API's
+# Registering API'shttps://www.worktravel.agency/uk-property-development-data
+# https://www.worktravel.agency/notification-settings
 app.register_blueprint(sales)
 app.register_blueprint(rental)
 app.register_blueprint(area)
 app.register_blueprint(evaluate)
-
+app.register_blueprint(automations_bp)
 
 @app.route('/', methods=['GET', 'POST'])
 # @cached(cache=TTLCache(maxsize=1024, ttl=600))
@@ -110,10 +113,32 @@ def embeds(path):
         return render_template('embeds/area.html')
     elif path == "rental":
         return render_template('embeds/rental.html')
+    elif path == "settings":
+        return render_template('embeds/notificationssettings.html')
     elif path == "index":
         return render_template('embeds/property_development.html')
     else:
         return render_template('embeds/property_development.html')
+
+
+@app.route("/notification-settings", methods=["POST"])
+def notification_settings():
+    notification_settings_data: dict = request.get_json()
+
+    if 'search' in notification_settings_data and notification_settings_data['search'] != "":
+        search = notification_settings_data['search']
+    else:
+        return jsonify({'status': 'failure', 'message': 'Please indicate your search option'}), 500
+    if 'postcode' in notification_settings_data and notification_settings_data['postcode'] != "":
+        postcode = notification_settings_data['postcode']
+    else:
+        return jsonify({'status': 'failure', 'message': 'Please indicate postcode'}), 500
+    if 'email' in notification_settings_data and notification_settings_data['email'] != "":
+        email = notification_settings_data['email']
+    else:
+        return jsonify({'status': 'failure', 'message': 'Please indicate email'}), 500
+
+    return AdminView(config=config).save_notification_settings(search=search, postcode=postcode, email=email)
 
 
 # handling warp requests
