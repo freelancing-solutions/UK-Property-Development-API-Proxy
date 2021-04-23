@@ -9,6 +9,7 @@ config = Config()
 const = Const()
 
 
+
 class EndPoints:
     """
         Investigate Using Coroutines to improve the speed of endpoints requester function

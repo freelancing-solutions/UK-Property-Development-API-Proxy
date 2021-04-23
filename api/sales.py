@@ -7,6 +7,7 @@ sales = Blueprint('sales', __name__)
 # NOTE: Results cached for 12 Hours
 
 
+
 @sales.route('/api/v1/valuation-sale', methods=['POST'])
 @api_cache_decorator
 def valuation_sale(cache: any) -> tuple:

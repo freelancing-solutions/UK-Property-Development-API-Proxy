@@ -8,6 +8,7 @@ from store.store import AdminView
 automations_bp = Blueprint('automations', __name__)
 
 
+
 @automations_bp.route('/api/v1/property-notifications', methods=['POST', 'GET'])
 def property_notifications():
     if request.method == "GET":

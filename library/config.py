@@ -11,7 +11,7 @@ class Config:
     IS_DEV: bool = config('IS_DEV')
     PROJECT: str = "property-data-t-37071"
     CACHE_TTL: int = 43200
-    CACHE_SIZE: int = 1024
+    CACHE_SIZE: int = 2048
 
     AUTHORIZED_ADDRESSES: list = ['https://www.worktravel.agency',
                                   'https://worktravel.agency',

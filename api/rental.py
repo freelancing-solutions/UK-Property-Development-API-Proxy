@@ -6,6 +6,7 @@ from library import api_cache_decorator
 rental = Blueprint('rental', __name__)
 
 
+
 @rental.route('/api/v1/valuation-rent', methods=['POST'])
 @api_cache_decorator
 def valuation_rent(cache: any) -> tuple:

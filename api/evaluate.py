@@ -7,6 +7,7 @@ from library import api_cache_decorator
 evaluate = Blueprint('evaluate', __name__)
 
 
+
 @evaluate.route('/api/v1/planning', methods=['POST'])
 @api_cache_decorator
 def planning(cache: any) -> tuple:
